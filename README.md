@@ -6,6 +6,12 @@ anchor logs served from indexed chain state. Both index contracts that emit
 **no events** — the data rides in storage writes and raw calldata, captured via
 call handlers.
 
+Both are **published on The Graph's decentralized network** (Arbitrum One) and
+serve attested responses through the gateway:
+[Private Bond Anchors](https://thegraph.com/explorer/subgraphs/6Jq7LpWsX2CdNBJsBU4tiK4y21SDn5E3uUnLzNkNsUR1) ·
+[Encrypted Anchor Stream](https://thegraph.com/explorer/subgraphs/46mk4GwpMkQEsR5UG3mFwSmYVU7ii838cvQGNt5WEhFb).
+All four contracts are source-verified on Etherscan.
+
 | Subgraph | What it indexes | Deployment ID |
 |---|---|---|
 | `private-bond-anchors-sepolia` | The anchor surface of [EthSystems' open-source private-bond PoC](https://github.com/ethsystems/pocs) (deployed unmodified at pin `94f1e5c`): note commitments, Merkle roots, nullifiers | `QmdfH3RytY2t5arbFehPmL4wyzejRaRVmN5PyhyKVJPiaz` |
