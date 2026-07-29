@@ -1,0 +1,23 @@
+{
+  "name": "item-02-anchor-subgraph",
+  "version": "0.1.0",
+  "private": true,
+  "license": "GPL-2.0-or-later",
+  "scripts": {
+    "codegen": "graph codegen",
+    "build": "graph build",
+    "test": "graph test",
+    "test:docker": "graph test -d",
+    "create-local": "graph create --node http://localhost:8020/ anchor-data-edge",
+    "deploy-local": "graph deploy --node http://localhost:8020/ --ipfs http://localhost:5001 --version-label v0.1.0 anchor-data-edge"
+  },
+  "dependencies": {
+    "@graphprotocol/graph-cli": "0.98.1",
+    "@graphprotocol/graph-ts": "0.38.2"
+  },
+  "devDependencies": {
+    "assemblyscript": "0.19.23",
+    "matchstick-as": "0.6.0"
+  },
+  "comment:assemblyscript": "matchstick shells out to node_modules/assemblyscript/bin/asc. graph-cli depends on the same version transitively, but pnpm's isolated node_modules does not expose it at the package root, so it is declared here explicitly. Pinned to graph-cli 0.98.1's own assemblyscript dependency."
+}

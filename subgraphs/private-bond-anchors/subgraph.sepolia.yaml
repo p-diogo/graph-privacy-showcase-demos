@@ -1,0 +1,60 @@
+# Primary design (spec §4.3): call handlers on all five anchor-writing
+# functions.
+#
+# Call handlers are required because EthSystems' PrivateBond emits no events at
+# all — every anchor lands in storage, and its arguments exist only in
+# calldata. This is asserted by behaviour in
+# src/contracts/test/PrivateBondAnchors.t.sol::test_contractEmitsNoEvents.
+#
+# Public precedent for the pattern: the Epoch Block Oracle subgraph declares a
+# call handler on `crossChainEpochOracle(bytes)`
+# (graphprotocol/block-oracle@d995307). Note what the same repo shows about
+# availability: its mainnet config runs calldata mode while its Sepolia config
+# falls back to eventful mode — the flagship precedent itself avoids call
+# handlers on Sepolia. Call handlers need trace-capable chain data, so this
+# manifest carries a network go/no-go before any publish (see REPRODUCE.md).
+#
+# If trace serving is unavailable, subgraph.fallback-a.yaml is the drop-in
+# replacement: same schema, same anchor-log semantics, no trace dependency.
+
+specVersion: 1.0.0
+description: >-
+  Anchor surface of EthSystems' private-bond PoC (note commitments, nullifiers,
+  claimed Merkle roots, lifecycle calls), served as an ordered log for auditor
+  replay. Indexes public chain state only; provides no privacy of any kind.
+repository: https://github.com/graphprotocol/graph-privacy-showcase
+schema:
+  file: ./schema.graphql
+dataSources:
+  - kind: ethereum/contract
+    name: PrivateBond
+    network: 'sepolia'
+    source:
+      address: '0x0262b19FF2Fe455f43750442e7B32072D87059b1'
+      abi: PrivateBond
+      startBlock: 11376008
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.9
+      language: wasm/assemblyscript
+      file: ./src/mapping.ts
+      entities:
+        - Bond
+        - Commitment
+        - Nullifier
+        - RootClaimed
+        - LifecycleCall
+      abis:
+        - name: PrivateBond
+          file: ./abis/PrivateBond.json
+      callHandlers:
+        - function: mint(bytes32)
+          handler: handleMint
+        - function: mintBatch(bytes32[])
+          handler: handleMintBatch
+        - function: transfer(bytes,bytes32,bytes32[2],bytes32[2])
+          handler: handleTransfer
+        - function: atomicSwap(bytes,bytes32[],bytes,bytes32[])
+          handler: handleAtomicSwap
+        - function: burn(bytes,bytes32,bytes32[2],bytes32[2],bytes32,bytes32)
+          handler: handleBurn
