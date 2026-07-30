@@ -1,0 +1,493 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Verify it yourself — Graph Privacy Showcase</title>
+<style>
+  :root{
+    --bg:#ffffff; --fg:#16161d; --muted:#5b5b6b; --line:#e3e3ea;
+    --card:#fafafc; --ok:#0f7b46; --bad:#b3261e; --wait:#7a6a00;
+    --accent:#4c1d95; --code:#f4f4f8;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{ --bg:#0f0f14; --fg:#ececf1; --muted:#a0a0b0; --line:#2a2a35;
+      --card:#17171f; --ok:#4ade80; --bad:#f87171; --wait:#fbbf24;
+      --accent:#c4b5fd; --code:#1c1c26; }
+  }
+  :root[data-theme="dark"]{ --bg:#0f0f14; --fg:#ececf1; --muted:#a0a0b0; --line:#2a2a35;
+    --card:#17171f; --ok:#4ade80; --bad:#f87171; --wait:#fbbf24; --accent:#c4b5fd; --code:#1c1c26; }
+  :root[data-theme="light"]{ --bg:#ffffff; --fg:#16161d; --muted:#5b5b6b; --line:#e3e3ea;
+    --card:#fafafc; --ok:#0f7b46; --bad:#b3261e; --wait:#7a6a00; --accent:#4c1d95; --code:#f4f4f8; }
+
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--fg);
+    font:16px/1.6 ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+  .wrap{max-width:920px;margin:0 auto;padding:2.5rem 1.25rem 5rem}
+  h1{font-size:1.9rem;line-height:1.25;margin:0 0 .5rem;letter-spacing:-.02em}
+  h2{font-size:1.15rem;margin:2.5rem 0 .35rem;letter-spacing:-.01em}
+  p{margin:.6rem 0}
+  .lede{color:var(--muted);font-size:1.05rem;max-width:64ch}
+  .muted{color:var(--muted)}
+  .small{font-size:.86rem}
+  code,.mono{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:.85em}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:10px;
+    padding:1rem 1.1rem;margin:1rem 0}
+  button{font:inherit;font-size:.95rem;padding:.5rem .95rem;border-radius:7px;
+    border:1px solid var(--line);background:var(--bg);color:var(--fg);cursor:pointer}
+  button:hover{border-color:var(--accent)}
+  button:disabled{opacity:.5;cursor:default}
+  button.primary{background:var(--accent);color:var(--bg);border-color:var(--accent);font-weight:600}
+  input.mono{padding:.45rem .6rem;border-radius:6px;border:1px solid var(--line);
+    background:var(--bg);color:var(--fg);width:100%;max-width:100%}
+  .row{display:flex;gap:.6rem;flex-wrap:wrap;align-items:center}
+  .scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
+  table{border-collapse:collapse;width:100%;font-size:.9rem}
+  th,td{text-align:left;padding:.4rem .6rem;border-bottom:1px solid var(--line);
+    white-space:nowrap;vertical-align:top}
+  th{font-weight:600;color:var(--muted);font-size:.8rem;text-transform:uppercase;letter-spacing:.04em}
+  .ok{color:var(--ok);font-weight:600}
+  .bad{color:var(--bad);font-weight:600}
+  .wait{color:var(--wait)}
+  .status{margin:.5rem 0 0;font-size:.9rem}
+  .note{border-left:3px solid var(--line);padding:.15rem 0 .15rem .9rem;color:var(--muted);
+    font-size:.92rem;margin:1rem 0}
+  a{color:var(--accent)}
+  hr{border:0;border-top:1px solid var(--line);margin:2.5rem 0}
+  .limits li{margin:.35rem 0;color:var(--muted)}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<h1>Verify it yourself</h1>
+<p class="lede">
+  This page checks the two live demonstrations against Ethereum Sepolia
+  <strong>in your browser</strong>, talking straight to a public RPC. No API key,
+  no install, and — the point of the exercise — <strong>no component from The
+  Graph in the trust path</strong>. Everything the index serves is meant to be
+  re-derivable without it. Here it is, re-derived.
+</p>
+
+<div class="card">
+  <div class="row">
+    <button class="primary" id="runAll">Run every check</button>
+    <span class="status" id="allStatus"></span>
+  </div>
+  <p class="small muted" style="margin-bottom:0">
+    RPC endpoint: <code id="rpcLabel"></code> — a public Sepolia node, swappable below.
+  </p>
+</div>
+
+<h2>1 · The confidential bond</h2>
+<p class="muted small">
+  An issuer anchored a bond's lifecycle on-chain as Poseidon commitments and
+  Merkle roots. Values, owners and amounts never touched the chain. These
+  reads ask the contract directly what it actually anchored.
+</p>
+
+<div class="card">
+  <div class="row"><button id="runBond">Check the bond</button><span class="status" id="bondStatus"></span></div>
+  <div class="scroll"><table id="bondTable"><thead>
+    <tr><th>Check</th><th>Read from chain</th><th>Result</th></tr>
+  </thead><tbody></tbody></table></div>
+</div>
+
+<div class="card">
+  <p style="margin-top:0"><strong>Now try to fool it.</strong> This asks the bond
+  contract whether a Merkle root is one it anchored. Change any digit and it
+  answers <span class="bad">false</span> — the chain will not confirm a root
+  that was never claimed.</p>
+  <div class="row">
+    <input class="mono" id="rootInput" spellcheck="false"
+      value="0x243a1d9096387fadfabf72873f8ad95027ce91996125958d2270074d7956850d">
+  </div>
+  <div class="row" style="margin-top:.6rem">
+    <button id="runRoot">Ask the contract</button>
+    <button id="breakRoot">Break one digit</button>
+    <span class="status" id="rootStatus"></span>
+  </div>
+</div>
+
+<h2>2 · The encrypted anchor stream</h2>
+<p class="muted small">
+  A record-keeper encrypted ten records client-side and posted only their
+  ciphertext digests, as raw calldata, to a contract that stores nothing and
+  emits nothing. This rebuilds that stream from the transactions themselves and
+  re-computes the hash chain that links each anchor to the one before it.
+</p>
+
+<div class="card">
+  <div class="row"><button id="runStream">Rebuild the stream</button><span class="status" id="streamStatus"></span></div>
+  <div class="scroll"><table id="streamTable"><thead>
+    <tr><th>Seq</th><th>Ciphertext digest</th><th>Chain link</th><th>Tx</th></tr>
+  </thead><tbody></tbody></table></div>
+  <p class="small muted" id="streamNotes" style="margin-bottom:0"></p>
+</div>
+
+<hr>
+
+<h2>What this page does and does not establish</h2>
+<ul class="limits small">
+  <li><strong>Establishes:</strong> the bond contract holds exactly these
+    commitments and confirms exactly these roots; the anchor stream is
+    contiguous, hash-chained, and every digest is the one the chain carries.
+    All of it re-derived here, from public chain data.</li>
+  <li><strong>Does not establish</strong> that the disclosed off-chain records
+    match those anchors. That reconciliation is what the CLIs do, and it needs
+    the disclosed record set — see
+    <a href="private-bond-audit-replay.md">the bond page</a> and
+    <a href="encrypted-anchor-stream.md">the anchor-stream page</a>.</li>
+  <li><strong>Says nothing about off-chain reality.</strong> A record that was
+    never anchored is invisible to every check here. This is not a proof of
+    reserves.</li>
+  <li><strong>Demo-grade, fictional data.</strong> The bond id is an
+    ISIN-<em>format</em> string that cannot collide with a real security, and
+    every record, party and amount is invented.</li>
+  <li><strong>This page deliberately avoids the index.</strong> Querying the
+    subgraphs on the decentralized network needs a gateway API key, and returns
+    something this page cannot: a signed attestation binding the response to an
+    indexer's stake. That is the CLIs' job.</li>
+</ul>
+
+<div class="note">
+  Reads go to a public RPC of your choosing; change it if you would rather not
+  trust that one — the whole argument here is that you should not have to.
+  <div class="row" style="margin-top:.5rem">
+    <input class="mono" id="rpcInput" spellcheck="false" value="https://ethereum-sepolia-rpc.publicnode.com">
+  </div>
+</div>
+
+<p class="small muted">
+  <a href="matrix.md">All demonstrations</a> ·
+  <a href="https://github.com/p-diogo/graph-privacy-showcase-demos">code</a> ·
+  <a href="https://sepolia.etherscan.io/address/0x0262b19FF2Fe455f43750442e7B32072D87059b1">bond contract</a> ·
+  <a href="https://sepolia.etherscan.io/address/0x88AE18d29C20267441C5393787f719fa3f334Dcb">anchor contract</a>
+</p>
+
+</div>
+
+<script>
+"use strict";
+
+/* ---------- canonical values (deploy/canonical.json) ---------- */
+const BOND      = "0x0262b19FF2Fe455f43750442e7B32072D87059b1";
+const EDGE      = "0x88AE18d29C20267441C5393787f719fa3f334Dcb";
+const BOND_ID   = "0x4fa70ac1719c2bc2414780925b865735615b835f2b84f2831ea9c6e69b3d08a3";
+const BOND_STR  = "XF0000000001";
+const LEAF_COUNT = 8;
+const ANCHORED_ROOT = "0x243a1d9096387fadfabf72873f8ad95027ce91996125958d2270074d7956850d";
+const STREAM_ID = "0x0c0bf6a287a135b35900881fe941de67087970677cb4153c8d02961c9970e1ef";
+
+/* The ten anchors, in sequence, plus the two deliberate edge cases. These are
+   pointers only: every byte behind them is fetched and checked below, so a
+   wrong hash here fails loudly rather than passing quietly. */
+const ANCHOR_TXS = [
+  "0x14abd6a4a1daffb7e245a329199f279b41ace14baf3e95929a73a625bed0186b",
+  "0x2110d21801c292f2a1535b0a1f978a112918b0edd8a86c2f10655f1e2bacdb47",
+  "0x3a72455a0e494487dc4dfe6a4a9abd094a510b295727acf81e0e68ec20bec1aa",
+  "0x9646ea67260b34de7741b9694f550ca7827e14862b411bd37ef03ca5f80dd7c7",
+  "0x79462b8b3a7ff65b07b737110bc4aac375596e144ac8096dd0cf7c38765cde35",
+  "0xf23501aaedba87dd618a7ef1514020ac257cf83c8f7d3e971e1c300c5a91e8a0",
+  "0x065cf8a245655b9f4f4e6617d5c5a7b443a6c0d0eacdb1344551833c8dc3e224",
+  "0x760af82ba63cea142c6a1c51af85896a6f9733d4ea4ec558653e88ee3e62ba01",
+  "0xb76d7d901bdd05e82977b3cbd13ae10ffe68524b89b2c959c095131f02e0f156",
+  "0xa678e6548dde4fab48a4084c95118aa8b9f63fbb9ad1dc25975eb9074c883e19"
+];
+const MALFORMED_TX = "0x752bb69cf25dc3149113684152847a9576694fdf92d320de994d86f94a9063c3";
+
+/* selectors */
+const SEL_BOND_ID     = "0x86a91683"; // bondId()
+const SEL_KNOWN_ROOTS = "0x4e73da7d"; // knownRoots(bytes32)
+const SEL_COMMITMENTS = "0x49ce8997"; // commitments(uint256)
+
+/* ---------- keccak-256, self-contained (no CDN, no dependency) ---------- */
+const RC = [
+  [0,1],[0,0x8082],[0x80000000,0x808a],[0x80000000,0x80008000],[0,0x808b],[0,0x80000001],
+  [0x80000000,0x80008081],[0x80000000,0x8009],[0,0x8a],[0,0x88],[0,0x80008009],[0,0x8000000a],
+  [0,0x8000808b],[0x80000000,0x8b],[0x80000000,0x8089],[0x80000000,0x8003],[0x80000000,0x8002],
+  [0x80000000,0x80],[0,0x800a],[0x80000000,0x8000000a],[0x80000000,0x80008081],[0x80000000,0x8080],
+  [0,0x80000001],[0x80000000,0x80008008]
+];
+const ROTC = [1,3,6,10,15,21,28,36,45,55,2,14,27,41,56,8,25,43,62,18,39,61,20,44];
+const PILN = [10,7,11,17,18,3,5,16,8,21,24,4,15,23,19,13,12,2,20,14,22,9,6,1];
+
+function rotl64(hi, lo, n){
+  if (n === 0) return [hi, lo];
+  if (n < 32) return [ (hi << n) | (lo >>> (32 - n)), (lo << n) | (hi >>> (32 - n)) ];
+  n -= 32;
+  if (n === 0) return [lo, hi];
+  return [ (lo << n) | (hi >>> (32 - n)), (hi << n) | (lo >>> (32 - n)) ];
+}
+
+function keccakF(st){
+  for (let round = 0; round < 24; round++){
+    const bcHi = new Int32Array(5), bcLo = new Int32Array(5);
+    for (let i = 0; i < 5; i++){
+      bcHi[i] = st[2*i] ^ st[2*(i+5)] ^ st[2*(i+10)] ^ st[2*(i+15)] ^ st[2*(i+20)];
+      bcLo[i] = st[2*i+1] ^ st[2*(i+5)+1] ^ st[2*(i+10)+1] ^ st[2*(i+15)+1] ^ st[2*(i+20)+1];
+    }
+    for (let i = 0; i < 5; i++){
+      const r = rotl64(bcHi[(i+1)%5], bcLo[(i+1)%5], 1);
+      const tHi = bcHi[(i+4)%5] ^ r[0], tLo = bcLo[(i+4)%5] ^ r[1];
+      for (let j = 0; j < 25; j += 5){
+        st[2*(j+i)]   ^= tHi;
+        st[2*(j+i)+1] ^= tLo;
+      }
+    }
+    let tHi = st[2], tLo = st[3];
+    for (let i = 0; i < 24; i++){
+      const j = PILN[i];
+      const sHi = st[2*j], sLo = st[2*j+1];
+      const r = rotl64(tHi, tLo, ROTC[i]);
+      st[2*j] = r[0]; st[2*j+1] = r[1];
+      tHi = sHi; tLo = sLo;
+    }
+    for (let j = 0; j < 25; j += 5){
+      const hi = [], lo = [];
+      for (let i = 0; i < 5; i++){ hi.push(st[2*(j+i)]); lo.push(st[2*(j+i)+1]); }
+      for (let i = 0; i < 5; i++){
+        st[2*(j+i)]   = hi[i] ^ (~hi[(i+1)%5] & hi[(i+2)%5]);
+        st[2*(j+i)+1] = lo[i] ^ (~lo[(i+1)%5] & lo[(i+2)%5]);
+      }
+    }
+    st[0] ^= RC[round][0];
+    st[1] ^= RC[round][1];
+  }
+}
+
+function keccak256(bytes){
+  const rate = 136;
+  const st = new Int32Array(50);
+  const padded = new Uint8Array(Math.ceil((bytes.length + 1) / rate) * rate);
+  padded.set(bytes);
+  padded[bytes.length] = 0x01;
+  padded[padded.length - 1] |= 0x80;
+  for (let off = 0; off < padded.length; off += rate){
+    for (let i = 0; i < rate; i += 8){
+      const lo = padded[off+i] | (padded[off+i+1]<<8) | (padded[off+i+2]<<16) | (padded[off+i+3]<<24);
+      const hi = padded[off+i+4] | (padded[off+i+5]<<8) | (padded[off+i+6]<<16) | (padded[off+i+7]<<24);
+      st[(i/8)*2]     ^= hi;
+      st[(i/8)*2 + 1] ^= lo;
+    }
+    keccakF(st);
+  }
+  const out = new Uint8Array(32);
+  for (let i = 0; i < 4; i++){
+    const hi = st[i*2], lo = st[i*2+1];
+    out[i*8+0] = lo & 0xff;       out[i*8+1] = (lo>>>8) & 0xff;
+    out[i*8+2] = (lo>>>16) & 0xff; out[i*8+3] = (lo>>>24) & 0xff;
+    out[i*8+4] = hi & 0xff;       out[i*8+5] = (hi>>>8) & 0xff;
+    out[i*8+6] = (hi>>>16) & 0xff; out[i*8+7] = (hi>>>24) & 0xff;
+  }
+  return out;
+}
+
+/* ---------- helpers ---------- */
+const hexToBytes = h => {
+  h = h.replace(/^0x/, "");
+  const a = new Uint8Array(h.length / 2);
+  for (let i = 0; i < a.length; i++) a[i] = parseInt(h.substr(i*2, 2), 16);
+  return a;
+};
+const bytesToHex = b => "0x" + Array.from(b).map(x => x.toString(16).padStart(2,"0")).join("");
+const short = h => h.slice(0,10) + "…" + h.slice(-6);
+const rpcUrl = () => document.getElementById("rpcInput").value.trim();
+
+let rpcId = 0;
+async function rpc(method, params){
+  const res = await fetch(rpcUrl(), {
+    method: "POST",
+    headers: {"content-type": "application/json"},
+    body: JSON.stringify({jsonrpc:"2.0", id: ++rpcId, method, params})
+  });
+  const j = await res.json();
+  if (j.error) throw new Error(j.error.message || "RPC error");
+  return j.result;
+}
+const ethCall = (to, data) => rpc("eth_call", [{to, data}, "latest"]);
+const pad32 = h => h.replace(/^0x/,"").padStart(64, "0");
+
+function setStatus(id, text, cls){
+  const el = document.getElementById(id);
+  el.textContent = text;
+  el.className = "status " + (cls || "");
+}
+function addRow(tbodySel, cells){
+  const tr = document.createElement("tr");
+  for (const c of cells){
+    const td = document.createElement("td");
+    if (c && c.html !== undefined){ td.innerHTML = c.html; }
+    else { td.textContent = c; }
+    if (c && c.cls) td.className = c.cls;
+    tr.appendChild(td);
+  }
+  document.querySelector(tbodySel).appendChild(tr);
+}
+
+/* ---------- check 1: the bond ---------- */
+async function checkBond(){
+  const tbody = "#bondTable tbody";
+  document.querySelector(tbody).innerHTML = "";
+  setStatus("bondStatus", "reading the contract…", "wait");
+  let failures = 0;
+  try {
+    const id = await ethCall(BOND, SEL_BOND_ID);
+    const idOk = id.toLowerCase() === BOND_ID.toLowerCase();
+    if (!idOk) failures++;
+    addRow(tbody, [
+      "Bond identifier",
+      {html:`<span class="mono">${short(id)}</span>`},
+      {html: idOk ? `<span class="ok">matches “${BOND_STR}”</span>` : `<span class="bad">unexpected</span>`}
+    ]);
+
+    for (let i = 0; i < LEAF_COUNT; i++){
+      const c = await ethCall(BOND, SEL_COMMITMENTS + pad32("0x"+i.toString(16)));
+      const present = /[1-9a-f]/.test(c.slice(2));
+      if (!present) failures++;
+      addRow(tbody, [
+        `Anchored commitment ${i}`,
+        {html:`<span class="mono">${short(c)}</span>`},
+        {html: present ? `<span class="ok">present on chain</span>` : `<span class="bad">empty</span>`}
+      ]);
+    }
+
+    const r = await ethCall(BOND, SEL_KNOWN_ROOTS + pad32(ANCHORED_ROOT));
+    const known = /1$/.test(r);
+    if (!known) failures++;
+    addRow(tbody, [
+      "Published Merkle root",
+      {html:`<span class="mono">${short(ANCHORED_ROOT)}</span>`},
+      {html: known ? `<span class="ok">the bond confirms it anchored this</span>` : `<span class="bad">not known</span>`}
+    ]);
+
+    setStatus("bondStatus", failures ? `${failures} check(s) failed` : "all checks passed, read live from chain",
+              failures ? "bad" : "ok");
+  } catch (e) {
+    setStatus("bondStatus", "RPC error: " + e.message, "bad");
+    failures++;
+  }
+  return failures === 0;
+}
+
+/* ---------- the tamper control ---------- */
+async function askRoot(){
+  const v = document.getElementById("rootInput").value.trim();
+  if (!/^0x[0-9a-fA-F]{64}$/.test(v)){
+    setStatus("rootStatus", "that is not a 32-byte hex root", "bad"); return;
+  }
+  setStatus("rootStatus", "asking the contract…", "wait");
+  try {
+    const r = await ethCall(BOND, SEL_KNOWN_ROOTS + pad32(v));
+    const known = /1$/.test(r);
+    setStatus("rootStatus",
+      known ? "true — the bond anchored this root" : "false — the bond never anchored this root",
+      known ? "ok" : "bad");
+  } catch (e){ setStatus("rootStatus", "RPC error: " + e.message, "bad"); }
+}
+function breakRoot(){
+  const el = document.getElementById("rootInput");
+  const s = el.value.trim();
+  const i = s.length - 1;
+  const d = s[i];
+  el.value = s.slice(0, i) + (d === "d" ? "e" : "d");
+  setStatus("rootStatus", "one digit changed — ask again", "");
+}
+
+/* ---------- check 2: the anchor stream ---------- */
+function decodeEnvelope(input){
+  /* calldata = 4-byte selector + 32-byte offset + 32-byte length + payload */
+  const bytes = hexToBytes(input);
+  if (bytes.length < 68 + 105) return null;
+  const env = bytes.slice(68, 68 + 105);
+  if (env[0] !== 1) return null;
+  const streamId = bytesToHex(env.slice(1, 33));
+  let seq = 0;
+  for (let i = 33; i < 41; i++) seq = seq * 256 + env[i];
+  return {
+    env,
+    streamId,
+    seq,
+    ciphertextDigest: bytesToHex(env.slice(41, 73)),
+    prevEnvelopeDigest: bytesToHex(env.slice(73, 105))
+  };
+}
+
+async function checkStream(){
+  const tbody = "#streamTable tbody";
+  document.querySelector(tbody).innerHTML = "";
+  document.getElementById("streamNotes").textContent = "";
+  setStatus("streamStatus", `fetching ${ANCHOR_TXS.length + 1} transactions…`, "wait");
+  let failures = 0, prevDigest = null;
+  try {
+    for (let i = 0; i < ANCHOR_TXS.length; i++){
+      const tx = await rpc("eth_getTransactionByHash", [ANCHOR_TXS[i]]);
+      if (!tx || (tx.to || "").toLowerCase() !== EDGE.toLowerCase()){
+        failures++;
+        addRow(tbody, [i, {html:'<span class="bad">not a call to the anchor contract</span>'}, "", ""]);
+        continue;
+      }
+      const e = decodeEnvelope(tx.input);
+      if (!e){ failures++; addRow(tbody, [i, {html:'<span class="bad">undecodable payload</span>'}, "", ""]); continue; }
+
+      const seqOk    = e.seq === i;
+      const streamOk = e.streamId.toLowerCase() === STREAM_ID.toLowerCase();
+      const linkOk   = (i === 0) || (e.prevEnvelopeDigest.toLowerCase() === prevDigest.toLowerCase());
+      if (!seqOk || !streamOk || !linkOk) failures++;
+
+      addRow(tbody, [
+        {html: seqOk ? String(e.seq) : `<span class="bad">${e.seq} (expected ${i})</span>`},
+        {html:`<span class="mono">${short(e.ciphertextDigest)}</span>`},
+        {html: i === 0
+          ? '<span class="muted">first anchor</span>'
+          : (linkOk ? '<span class="ok">links to previous</span>' : '<span class="bad">chain broken</span>')},
+        {html:`<a class="mono" href="https://sepolia.etherscan.io/tx/${ANCHOR_TXS[i]}">${short(ANCHOR_TXS[i])}</a>`}
+      ]);
+
+      prevDigest = bytesToHex(keccak256(e.env));
+    }
+
+    /* the deliberate junk payload: it must NOT decode */
+    const bad = await rpc("eth_getTransactionByHash", [MALFORMED_TX]);
+    const badDecode = bad ? decodeEnvelope(bad.input) : null;
+    const notes = [];
+    notes.push(badDecode === null
+      ? "The deliberately malformed post does not decode as an envelope — the index reports it rather than dropping it silently."
+      : "WARNING: the malformed post decoded, which it should not.");
+    if (badDecode !== null) failures++;
+    notes.push("Anchor 0 was also submitted twice; the duplicate carries identical bytes, so it changes no state and is reported as a duplicate.");
+    document.getElementById("streamNotes").textContent = notes.join(" ");
+
+    setStatus("streamStatus",
+      failures ? `${failures} check(s) failed` : "10 anchors, contiguous, hash chain intact — rebuilt from calldata",
+      failures ? "bad" : "ok");
+  } catch (e){
+    setStatus("streamStatus", "RPC error: " + e.message, "bad");
+    failures++;
+  }
+  return failures === 0;
+}
+
+/* ---------- wiring ---------- */
+document.getElementById("rpcLabel").textContent = document.getElementById("rpcInput").value;
+document.getElementById("rpcInput").addEventListener("input", e => {
+  document.getElementById("rpcLabel").textContent = e.target.value;
+});
+document.getElementById("runBond").onclick   = checkBond;
+document.getElementById("runStream").onclick = checkStream;
+document.getElementById("runRoot").onclick   = askRoot;
+document.getElementById("breakRoot").onclick = breakRoot;
+document.getElementById("runAll").onclick = async () => {
+  const btn = document.getElementById("runAll");
+  btn.disabled = true;
+  setStatus("allStatus", "running…", "wait");
+  const a = await checkBond();
+  const b = await checkStream();
+  setStatus("allStatus", (a && b)
+    ? "everything checks out, from public chain data alone"
+    : "something did not check out — see below", (a && b) ? "ok" : "bad");
+  btn.disabled = false;
+};
+</script>
+</body>
+</html>

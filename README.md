@@ -116,21 +116,35 @@ indexing a surface that conventional event-based tooling cannot see at all.
 
 ---
 
-## Try it in thirty seconds
+## Try it in thirty seconds — no key, no install
+
+Open [**`docs/verify.html`**](docs/verify.html) in a browser. It talks to a
+public Sepolia RPC directly and, in front of you, reads the bond's anchored
+commitments and roots off the chain, rebuilds the encrypted anchor stream from
+raw transaction calldata, and re-computes the hash chain that links it. Nothing
+from The Graph is in that trust path — which is the point: everything these
+demonstrations serve is meant to be re-derivable without them.
+
+Or from a terminal, with the same public RPC:
 
 ```bash
-curl -s https://api.studio.thegraph.com/query/1714091/anchor-data-edge-sepolia/v0.1.0 \
-  -H 'content-type: application/json' \
-  -d '{"query":"{ streams { id anchorCount latestSeq headEnvelopeDigest } anchors(first:10, orderBy:seq){ seq ciphertextDigest txHash } }"}'
-```
-
-Ten anchors, sequence 0–9, hash-chained. Now cross-check the index against the
-chain directly — the whole point of the exercise:
-
-```bash
+# the bond contract answers directly — is this Merkle root one the bond anchored?
 cast call 0x0262b19FF2Fe455f43750442e7B32072D87059b1 "knownRoots(bytes32)(bool)" \
   0x243a1d9096387fadfabf72873f8ad95027ce91996125958d2270074d7956850d \
   --rpc-url https://ethereum-sepolia-rpc.publicnode.com   # → true
+
+# change one digit of the root and it answers false
+```
+
+**Querying the index itself needs a gateway API key** (free from
+[Subgraph Studio](https://thegraph.com/studio/apikeys/)) — that is the
+decentralized-network path, the one the CLIs use and the one that returns a
+signed attestation with every response:
+
+```bash
+curl -s https://gateway.thegraph.com/api/deployments/id/QmWcifKxjEKSg1nVerGXjmF5jbydj4RKtQgVvvxJBFyVs6 \
+  -H "authorization: Bearer $GRAPH_API_KEY" -H 'content-type: application/json' \
+  -d '{"query":"{ streams { id anchorCount latestSeq headEnvelopeDigest } anchors(first:10, orderBy:seq){ seq ciphertextDigest txHash } }"}'
 ```
 
 ## Verify it properly
