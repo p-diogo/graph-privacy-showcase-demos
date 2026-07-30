@@ -1,0 +1,84 @@
+{
+  "schema": "bond-replay/records-manifest/1",
+  "bond_id": "0x4fa70ac1719c2bc2414780925b865735615b835f2b84f2831ea9c6e69b3d08a3",
+  "bond_id_string": "XF0000000001",
+  "maturity_date": 1785338088,
+  "leaf_counts_after_each_call": [
+    1,
+    2,
+    4,
+    6,
+    8
+  ],
+  "call_order": [
+    "mint",
+    "mintBatch",
+    "transfer",
+    "atomicSwap",
+    "burn"
+  ],
+  "entries": [
+    {
+      "leaf_index": 0,
+      "class": "disclosed",
+      "record_file": "bond_issuer_1000001.json",
+      "commitment": "0x264a5e0e792bfd5c5d8db9fa4773fe9149909213421e98b0ffeb7fa5516cdbcb",
+      "source_function": "MINT",
+      "note": "Global note tranche, 100,000,000 par. Minted by the issuer."
+    },
+    {
+      "leaf_index": 1,
+      "class": "disclosed",
+      "record_file": "bond_issuer_1000002.json",
+      "commitment": "0x2abee61b17f9cc31db253ee705366e7428a81187549fd6ae5e9262f95489d301",
+      "source_function": "MINT_BATCH",
+      "note": "Zero-value auxiliary note; the second join-split input the contract's 2-in shape requires."
+    },
+    {
+      "leaf_index": 2,
+      "class": "disclosed",
+      "record_file": "bond_investor-a_2000001.json",
+      "commitment": "0x2e9e5b1c2e4f7b81b18409f6cbd102a777dd76ca3daddc470143c2853b28f0a9",
+      "source_function": "TRANSFER",
+      "note": "Investor A's holding after the primary allocation."
+    },
+    {
+      "leaf_index": 3,
+      "class": "disclosed",
+      "record_file": "bond_issuer_2000002.json",
+      "commitment": "0x0100a81e8d17b4ee1df37a0e8595456a2338ba62b2ad98233b87e8222aaf732c",
+      "source_function": "TRANSFER",
+      "note": "Issuer change note from the primary allocation."
+    },
+    {
+      "leaf_index": 4,
+      "class": "disclosed",
+      "record_file": "bond_investor-b_3000001.json",
+      "commitment": "0x17c85ab5f8a3b62a6b740245ecf2ca4031ca5f36b8d7e8c2023cde329cc15a70",
+      "source_function": "ATOMIC_SWAP",
+      "note": "Investor B's holding after the secondary trade leg."
+    },
+    {
+      "leaf_index": 5,
+      "class": "disclosed",
+      "record_file": "bond_issuer_3000002.json",
+      "commitment": "0x185638a6719fc9294abe6399477f6da5602600ab264217ab640b0511e898fa9f",
+      "source_function": "ATOMIC_SWAP",
+      "note": "Issuer change note refreshed by the swap's second leg."
+    },
+    {
+      "leaf_index": 6,
+      "class": "burn-output-zero",
+      "commitment": "0x191b974f6ce4faf272e27461991abcf0338132a37ca993b2d96f6a12c950668b",
+      "source_function": "BURN",
+      "note": "Zero-value burn output. Structural artefact of the 2-out shape, not a disclosed record."
+    },
+    {
+      "leaf_index": 7,
+      "class": "burn-output-zero",
+      "commitment": "0x1b46b8f96cf5e9e28072722f07c2c45085931fcfb99e86b283f013c0707fc195",
+      "source_function": "BURN",
+      "note": "Zero-value burn output. Structural artefact of the 2-out shape, not a disclosed record."
+    }
+  ]
+}

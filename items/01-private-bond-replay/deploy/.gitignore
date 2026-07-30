@@ -16,5 +16,7 @@ lib/
 # Deployment artefacts. The canonical values are recorded by hand in
 # <repo>/deploy/canonical.json, which IS committed; these are the raw outputs a
 # run happens to produce, including dry-run ones.
-artifacts/
+# artifacts/ is IGNORED in the private program repo (generated there) but is
+# PUBLISHED here on purpose: canonical.json calls for the disclosed record set
+# to ship alongside it so a Mode-A reproducer has it without re-deriving.
 artifacts-dryrun/

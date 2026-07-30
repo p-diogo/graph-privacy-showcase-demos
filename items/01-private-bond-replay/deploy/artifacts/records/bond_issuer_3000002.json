@@ -1,0 +1,10 @@
+{
+  "commitment": "0x185638a6719fc9294abe6399477f6da5602600ab264217ab640b0511e898fa9f",
+  "nullifier": "0x2ba7dba3600a9bc88f727adbad546fe3465f510425f94dd4471776af04b42d29",
+  "value": 90000000,
+  "salt": 3000002,
+  "owner": "0x2f0409f7962f6673570d88b917021c615ea575c2654391718439eb354f9be8f3",
+  "asset_id": 1,
+  "maturity_date": 1785338088,
+  "created_at": "2030-01-01T00:00:00Z"
+}

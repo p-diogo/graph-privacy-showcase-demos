@@ -1,0 +1,13 @@
+{
+  "bondId": "0x4fa70ac1719c2bc2414780925b865735615b835f2b84f2831ea9c6e69b3d08a3",
+  "bondIdString": "XF0000000001",
+  "chainId": 11155111,
+  "owner": "0xb731A785B0B5012a1E5B3480653A4E5DF05ffD0A",
+  "pocSha": "94f1e5c94b6c4896977ae68094b99479eef4c371",
+  "privateBond": "0x0262b19FF2Fe455f43750442e7B32072D87059b1",
+  "verifier": "0xA89d708F1114f00eE4A0228a745Ef792D18ec49D",
+  "verifierKind": "MockVerifier",
+  "verifierNote": "MockVerifier always returns true. This deployment is NOT evidence that the PoC's ZK layer works.",
+  "deployBlock": 11376008,
+  "deployTx": "0xf164b1da06717fd4eb3591d19ff4e14519a94a2b5dcb4c970b2d1f8eb3246e04"
+}
