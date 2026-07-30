@@ -1,0 +1,115 @@
+# The anchor surface of EthSystems' PrivateBond, served as an ordered log.
+#
+# Scope note that governs every field here: this subgraph serves what the
+# contract anchored on chain. It does not, and cannot, describe off-chain
+# reality. A transfer the issuer never anchored appears nowhere below.
+#
+# The subgraph deliberately does NOT rebuild the Merkle tree. Root
+# reconstruction lives in the replay CLI, which reimplements the contract's exact
+# algorithm against a vetted Poseidon library; there is no vetted Poseidon-BN254
+# implementation for AssemblyScript, and writing one is product-grade
+# cryptographic work this showcase stops short of.
+
+# Which entry point appended an anchor.
+#
+# UNKNOWN exists only for Fallback A (subgraph.fallback-a.yaml), which reads
+# the commitment array through storage getters and therefore never sees
+# calldata. Naming the gap is the honest option: the primary call-handler
+# design never emits UNKNOWN, and a consumer can tell the two apart by
+# inspecting the value rather than by trusting which manifest was deployed.
+enum SourceFunction {
+  MINT
+  MINT_BATCH
+  TRANSFER
+  BURN
+  ATOMIC_SWAP
+  UNKNOWN
+}
+
+# Singleton describing the indexed bond.
+type Bond @entity(immutable: false) {
+  # Constant 'bond'. One contract per deployment.
+  id: ID!
+  address: Bytes!
+  # ISIN/CUSIP/BDT hash, read once via eth_call and constant thereafter.
+  bondId: Bytes!
+  # Running totals, maintained in call order.
+  leafCount: BigInt!
+  nullifierCount: BigInt!
+  callCount: BigInt!
+}
+
+# One appended note commitment, at its global position in the append-only array.
+#
+# `id` is the zero-padded leaf index so that lexicographic ordering by id equals
+# numeric ordering by position — the order the contract stored them in, which is
+# the order the tree is rebuilt from.
+type Commitment @entity(immutable: true) {
+  id: ID!
+  leafIndex: BigInt!
+  value: Bytes!
+  sourceFunction: SourceFunction!
+  # The lifecycle call that appended this leaf.
+  call: LifecycleCall!
+  txHash: Bytes!
+  blockNumber: BigInt!
+  timestamp: BigInt!
+  caller: Bytes!
+}
+
+# A spent-note marker. `id` is the nullifier value itself.
+type Nullifier @entity(immutable: true) {
+  id: ID!
+  value: Bytes!
+  sourceFunction: SourceFunction!
+  call: LifecycleCall!
+  txHash: Bytes!
+  blockNumber: BigInt!
+  timestamp: BigInt!
+  caller: Bytes!
+}
+
+# A Merkle root a proof-bearing call cited as its base.
+#
+# This is the root the *caller claimed*, taken from calldata. It is not
+# necessarily a root the contract recorded — the contract requires
+# `knownRoots[root]`, so a call that made it on chain cited a known root, but
+# this entity records the claim, and the audit checks the claim against the
+# chain rather than trusting the record.
+type RootClaimed @entity(immutable: true) {
+  id: ID!
+  root: Bytes!
+  sourceFunction: SourceFunction!
+  call: LifecycleCall!
+  txHash: Bytes!
+  blockNumber: BigInt!
+  timestamp: BigInt!
+}
+
+# One anchor-writing call.
+#
+# `id` is a zero-padded sequence number in call order, so lexicographic sorting
+# reproduces execution order without needing to parse block and transaction
+# positions.
+#
+# The proof argument is recorded as a digest and a length, never as bytes: full
+# Honk proofs are ~16 KB each and would bloat every audit response for no
+# verification benefit, since the proof is not checked by anything downstream of
+# the contract.
+type LifecycleCall @entity(immutable: true) {
+  id: ID!
+  sequence: BigInt!
+  function: SourceFunction!
+  # Total leaves in the commitment array once this call returned.
+  leafCountAfter: BigInt!
+  # keccak256 of the proof argument, or of empty bytes for mint/mintBatch.
+  proofHash: Bytes!
+  proofLength: BigInt!
+  txHash: Bytes!
+  blockNumber: BigInt!
+  timestamp: BigInt!
+  caller: Bytes!
+  commitments: [Commitment!]! @derivedFrom(field: "call")
+  nullifiers: [Nullifier!]! @derivedFrom(field: "call")
+  rootsClaimed: [RootClaimed!]! @derivedFrom(field: "call")
+}

@@ -1,0 +1,51 @@
+[package]
+name = "bond-replay"
+version = "0.1.0"
+edition = "2021"
+description = "Auditor replay CLI for the private-bond anchor set (graph-privacy-showcase item 01)"
+publish = false
+
+[dependencies]
+# Poseidon: deliberately the exact crate and version EthSystems' own wallet
+# uses (pocs/private-bond/custom-utxo/wallet/Cargo.toml at the pin), so note
+# commitments cannot drift from their implementation.
+poseidon-rs = "0.0.10"
+ff = { package = "ff_ce", version = "0.11", features = ["derive"] }
+num-bigint = "0.4"
+
+# Attestation verification runs the gateway's own code path, not a
+# reimplementation of EIP-712.
+thegraph-core = { version = "0.15", features = [
+    "attestation",
+    "serde",
+    "alloy-signer-local",
+    "alloy-signers",
+] }
+
+alloy = { version = "1.4", features = ["providers", "rpc-types", "sol-types", "json-abi", "contract", "signer-local"] }
+
+clap = { version = "4.5", features = ["derive", "env"] }
+serde = { version = "1", features = ["derive"] }
+serde_json = { version = "1", features = ["preserve_order"] }
+tokio = { version = "1", features = ["rt-multi-thread", "macros", "net", "time", "signal"] }
+reqwest = { version = "0.12", default-features = false, features = ["json", "rustls-tls"] }
+anyhow = "1"
+thiserror = "2"
+hex = "0.4"
+
+# Used by the mock-gateway shim (src/mock_gateway.rs). It is a normal
+# dependency rather than a dev-dependency because the shim also ships as a
+# binary, so REPRODUCE.md can drive the full audit path locally with the real
+# CLI instead of an in-test harness.
+axum = "0.8"
+
+[dev-dependencies]
+tempfile = "3"
+
+[[bin]]
+name = "bond-replay"
+path = "src/main.rs"
+
+[[bin]]
+name = "mock-gateway"
+path = "src/bin/mock-gateway.rs"

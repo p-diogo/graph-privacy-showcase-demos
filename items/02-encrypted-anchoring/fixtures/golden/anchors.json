@@ -1,0 +1,122 @@
+{
+  "format": "item02-golden-vectors",
+  "version": 1,
+  "note": "Deterministic AES-256-GCM-SIV (RFC 8452) with HKDF-SHA256 derived key and nonce, AAD = version||streamId||seq. Same records + same key => these exact bytes, forever.",
+  "keyfile": "fixtures/demo-keyfile.json",
+  "records": "fixtures/records.jsonl",
+  "streamId": "0x5be7cd098a9193fd81ad24e4bf014498cfc8e1fcfb796660cb9ee01eab8c373d",
+  "encKey": "0x64b9308791d43518c69f32a57fb3e3760d2154846c507e75dad4241cbfaf5a7e",
+  "envelopeLength": 105,
+  "anchors": [
+    {
+      "seq": "0",
+      "recordText": "{\"recordId\":\"SET-2026-0001\",\"kind\":\"settlement\",\"instrument\":\"XS9999999991\",\"counterparty\":\"COUNTERPARTY-A\",\"notional\":\"2500000.00\",\"currency\":\"EUR\",\"valueDate\":\"2026-08-03\",\"status\":\"confirmed\"}",
+      "nonce": "0x9b1a77ecaf96df056c760e3b",
+      "aad": "0x015be7cd098a9193fd81ad24e4bf014498cfc8e1fcfb796660cb9ee01eab8c373d0000000000000000",
+      "ciphertext": "0x6ce1a06ee2d72bc09e2cad1785dbabbc3b547a72a747ab479e1fa3580b0d4c36eed0659c80fc6f86141adda6b62f94997c9c5fec397e8b028363c9a688fde8597ad42bdf761305f1268ee7e5bc2d6b2048af56a156c841038d264ce7b42a5c7cc90f9011f983b8312066c57dd7a72a0e421fdce1f1aed90b3fb2e673d22b1d8521d17cb0f7a5e5741e56bf448d5b415d2a8857bdd8008a4f0362011b5fbd71538bd255f49e50a9e8c66b7af3af202018b88b3608bd8a1b3c7ca422a057e39fa0ac01d011535e083cbd47fa09b711289cf85753",
+      "ciphertextDigest": "0x6a7d5519f40837ccf235af0f6df03bca37d93957e1695f7ef5376c003aad5122",
+      "prevEnvelopeDigest": "0x0000000000000000000000000000000000000000000000000000000000000000",
+      "envelope": "0x015be7cd098a9193fd81ad24e4bf014498cfc8e1fcfb796660cb9ee01eab8c373d00000000000000006a7d5519f40837ccf235af0f6df03bca37d93957e1695f7ef5376c003aad51220000000000000000000000000000000000000000000000000000000000000000",
+      "envelopeDigest": "0xc4451b117afd7e0594b7cda6a942103538a0effa68a67874f1991654de5d8eaa"
+    },
+    {
+      "seq": "1",
+      "recordText": "{\"recordId\":\"SET-2026-0002\",\"kind\":\"settlement\",\"instrument\":\"XS9999999991\",\"counterparty\":\"COUNTERPARTY-B\",\"notional\":\"1750000.00\",\"currency\":\"EUR\",\"valueDate\":\"2026-08-03\",\"status\":\"confirmed\"}",
+      "nonce": "0x842b27894a11879cdef2851e",
+      "aad": "0x015be7cd098a9193fd81ad24e4bf014498cfc8e1fcfb796660cb9ee01eab8c373d0000000000000001",
+      "ciphertext": "0xf45c613887bf4f78e0b52dccb7d83fd2260c7ff848b6d8e087f97caea1a754675994b3c45748e3602ad36e8c71330a289d9a40237cde0ac8e97be8cad9782e629f74fe67398b5a4142759d02a482bffe4fa04ac3239f88b8a3a3690d766c6f6a3f00f9907287a23c04568f28b14d129ac0cac6d3329a5d6df8f111da42d4e44bebdddf0adab8135ba6b8ed773f77c146f2521b181e909b4441e6485c5ebe5d25003062254d177a1d04d65365fee0df628afe949c1cd3d1e4c9494944aac9071b47a909dae2044436d570cd19993a6442d61630",
+      "ciphertextDigest": "0xc06d2fe5b45403775e1db15cf06b3429f059c565beb48ecde1d992f89ebef2ea",
+      "prevEnvelopeDigest": "0xc4451b117afd7e0594b7cda6a942103538a0effa68a67874f1991654de5d8eaa",
+      "envelope": "0x015be7cd098a9193fd81ad24e4bf014498cfc8e1fcfb796660cb9ee01eab8c373d0000000000000001c06d2fe5b45403775e1db15cf06b3429f059c565beb48ecde1d992f89ebef2eac4451b117afd7e0594b7cda6a942103538a0effa68a67874f1991654de5d8eaa",
+      "envelopeDigest": "0x88f72e93add5ba9b183812b8eb706ab5c6670ceb2de82b46121a640e05cf5eb4"
+    },
+    {
+      "seq": "2",
+      "recordText": "{\"recordId\":\"COR-2026-0007\",\"kind\":\"corporate-action\",\"instrument\":\"XS9999999991\",\"event\":\"coupon\",\"rate\":\"0.0325\",\"payDate\":\"2026-08-15\",\"status\":\"scheduled\"}",
+      "nonce": "0xe6a334d6702772461efd749e",
+      "aad": "0x015be7cd098a9193fd81ad24e4bf014498cfc8e1fcfb796660cb9ee01eab8c373d0000000000000002",
+      "ciphertext": "0x7b6ffb2a2b81f5f971456b4d4d1ae616b022494a56aeda94a56ed354ea821b272a67f12ff9c4524265557b91f037adc103e5364174c656a906d2da5a115fc82776616fd6d5261ed59e4586ce3487523513ec771de50fc8a77c66bf7109cf9dc2515a81e3d1b1d9ce91704a3e03657f3fb6eb82cf06a641d012284f1fa6a53c844f1a0c27ee60a70e369ffb607e31b0925f93fb2b76bf4075fa19ad7938c4bfed7fb46af46bc4c3565a0c8c02c0325a",
+      "ciphertextDigest": "0x6941c23371aa944a2e78de2c3abeac238b5c89c6797dbb10f12a0da28a30cb3c",
+      "prevEnvelopeDigest": "0x88f72e93add5ba9b183812b8eb706ab5c6670ceb2de82b46121a640e05cf5eb4",
+      "envelope": "0x015be7cd098a9193fd81ad24e4bf014498cfc8e1fcfb796660cb9ee01eab8c373d00000000000000026941c23371aa944a2e78de2c3abeac238b5c89c6797dbb10f12a0da28a30cb3c88f72e93add5ba9b183812b8eb706ab5c6670ceb2de82b46121a640e05cf5eb4",
+      "envelopeDigest": "0xd2f4d65b268dbbffa34f9d756cc723b6e56b4f0303e6d003ab2862b898ceb002"
+    },
+    {
+      "seq": "3",
+      "recordText": "{\"recordId\":\"SET-2026-0003\",\"kind\":\"settlement\",\"instrument\":\"XS9999999992\",\"counterparty\":\"COUNTERPARTY-A\",\"notional\":\"900000.00\",\"currency\":\"USD\",\"valueDate\":\"2026-08-04\",\"status\":\"confirmed\"}",
+      "nonce": "0xe16f072d1592c56e622516ba",
+      "aad": "0x015be7cd098a9193fd81ad24e4bf014498cfc8e1fcfb796660cb9ee01eab8c373d0000000000000003",
+      "ciphertext": "0x40bd67c95dc21918671828db7c151fc20ee5974ca995b8b4e0ed9e00630c017777c0afaa6dc69e8a45a04fb63cd9ac8716e03d1fa043b7f6443b3b86a43e6852d58cd2066f4fb644f36e389d8a0c0891b9b0b8f5b799f600ca9576b43d176090c1b044fc1f55e789ab8056a83fae570e6d36625ab1a9f68b15763dc36628155438a9b493f4589e9a289e6ba7d455068c5e5a1ffecd06cc3a73ef2e771c32a624a4ae0d455fa0533d4fb8a2ba08894cbb7100c512f899f9ada653a54dfe5cf300fade0e0d8a199f6d3d5fa6d319c43e739a5d",
+      "ciphertextDigest": "0x1904181318905de671fe441a8c52b19f4993aa6008c2a9d91f17288f277b11ba",
+      "prevEnvelopeDigest": "0xd2f4d65b268dbbffa34f9d756cc723b6e56b4f0303e6d003ab2862b898ceb002",
+      "envelope": "0x015be7cd098a9193fd81ad24e4bf014498cfc8e1fcfb796660cb9ee01eab8c373d00000000000000031904181318905de671fe441a8c52b19f4993aa6008c2a9d91f17288f277b11bad2f4d65b268dbbffa34f9d756cc723b6e56b4f0303e6d003ab2862b898ceb002",
+      "envelopeDigest": "0x40888e8864fbb9bbb34b6811f0372d605cdbf1e7ffbb47a309a71e9b6fe04abf"
+    },
+    {
+      "seq": "4",
+      "recordText": "{\"recordId\":\"KYC-2026-0044\",\"kind\":\"attestation\",\"subject\":\"COUNTERPARTY-C\",\"assertion\":\"eligibility-review-passed\",\"reviewer\":\"COMPLIANCE-DESK-2\",\"effective\":\"2026-08-04\"}",
+      "nonce": "0x1a710a672cb3c196375430f8",
+      "aad": "0x015be7cd098a9193fd81ad24e4bf014498cfc8e1fcfb796660cb9ee01eab8c373d0000000000000004",
+      "ciphertext": "0x26093f8f5163b507829f8f5343970234ea1d3bcb52b8c8fedb6e237c4dad6f06259ba99f5386da37d49b46e619498a5aace10baa7bcd017348f3e10eb713bcc0c53a5b0bde64a7db6b87fa8d77cd1b6539b991a82c122085d9cbd3e38b1f960dbc9ceaaace5cad7c8082cc70b46233290a1d20b76ee6f74a7961d2dc07ea85f8c45b4c9ec8f6179dbb7e369d6dd5784a1460d34fffcc767827ba2014497e8e4da80b3ca3a1301eb18533dd3f7bd16bbfc9cae12fdcfda03eb01a1f3a",
+      "ciphertextDigest": "0xbafef38db96aabf5724f635503071b695c2ea14e31a54d92f4308b5f688d3b00",
+      "prevEnvelopeDigest": "0x40888e8864fbb9bbb34b6811f0372d605cdbf1e7ffbb47a309a71e9b6fe04abf",
+      "envelope": "0x015be7cd098a9193fd81ad24e4bf014498cfc8e1fcfb796660cb9ee01eab8c373d0000000000000004bafef38db96aabf5724f635503071b695c2ea14e31a54d92f4308b5f688d3b0040888e8864fbb9bbb34b6811f0372d605cdbf1e7ffbb47a309a71e9b6fe04abf",
+      "envelopeDigest": "0x7923277120793bbb3b486e642d148de036cb831e78cc2a422cf7ca651a71caed"
+    },
+    {
+      "seq": "5",
+      "recordText": "{\"recordId\":\"SET-2026-0004\",\"kind\":\"settlement\",\"instrument\":\"XS9999999992\",\"counterparty\":\"COUNTERPARTY-C\",\"notional\":\"3200000.00\",\"currency\":\"USD\",\"valueDate\":\"2026-08-05\",\"status\":\"confirmed\"}",
+      "nonce": "0xc89157b15f21ac0914c8f6b4",
+      "aad": "0x015be7cd098a9193fd81ad24e4bf014498cfc8e1fcfb796660cb9ee01eab8c373d0000000000000005",
+      "ciphertext": "0x421d04e5f040de08d90acad794aeb2ba999c5c3a0d97af7c09a772ffc6e08a8d8aeb9de444524037b07513dd5fd17c1232b5e16375669bdca83df61aafd1191f123c01f2e8187d6f098ac2728aa8a089d2e6e38c7ad46745e19923196b91cea52d540ea588718a0f0322504cb4471b161776f14b22c746239c910ca245fb610b54c478d2cbf4dd653dc605c3af900b85ff3ffc2c8473d4051c87de5f07f7ab238620d9ebc1f7ff6cb44489067f59d84b273265cae19c73f4acf6c4c755f767fa2ed336cfb386fdf879df8bd1790da2f953ae8f",
+      "ciphertextDigest": "0x0f666e2375ee2101372f190b6dc93a9aa6d650d45acc1da7023ec787c9dc9346",
+      "prevEnvelopeDigest": "0x7923277120793bbb3b486e642d148de036cb831e78cc2a422cf7ca651a71caed",
+      "envelope": "0x015be7cd098a9193fd81ad24e4bf014498cfc8e1fcfb796660cb9ee01eab8c373d00000000000000050f666e2375ee2101372f190b6dc93a9aa6d650d45acc1da7023ec787c9dc93467923277120793bbb3b486e642d148de036cb831e78cc2a422cf7ca651a71caed",
+      "envelopeDigest": "0xe06ee9d607422cbe611cf1f2917eccd3bfb9464d50f3d6275cdf62532f36fee8"
+    },
+    {
+      "seq": "6",
+      "recordText": "{\"recordId\":\"SET-2026-0005\",\"kind\":\"settlement\",\"instrument\":\"XS9999999993\",\"counterparty\":\"COUNTERPARTY-B\",\"notional\":\"640000.00\",\"currency\":\"GBP\",\"valueDate\":\"2026-08-05\",\"status\":\"amended\",\"amends\":\"SET-2026-0002\"}",
+      "nonce": "0x959609b83a06b6597be10ffd",
+      "aad": "0x015be7cd098a9193fd81ad24e4bf014498cfc8e1fcfb796660cb9ee01eab8c373d0000000000000006",
+      "ciphertext": "0x17c43354d38f4e3581b1294e49e81b3e99bfd81d8de14a7a7e10fb3e910067e90b1a0ec560e1c174b9f7cb3e9aabf1d44ced023f7df83ad53a7a47109b841921bae36c7b0202d923564a8dfe9f79e73b7bfd5e4fb17af0116b944d2c65c8c9666041d51484c9e959e2cc8e5e7bd94194ca07ce4bd39c2ad391762705fd6d9468b0729b976d8a658f4742e751bd281374c9389a910c51edf3bcafd0676700e4b94f64d9ca9dcebca35f7de0a0c87c6c2cec813288309fe5dbc30ebde75ae422aa867d071798a13d842460932913135d2aaf0143842654af610b09e36d655707cbe011e93486eedf1c5c",
+      "ciphertextDigest": "0x15129d22cae6102281862555234992df4cf8d1f5f0d930ce5bee7005a7369b4b",
+      "prevEnvelopeDigest": "0xe06ee9d607422cbe611cf1f2917eccd3bfb9464d50f3d6275cdf62532f36fee8",
+      "envelope": "0x015be7cd098a9193fd81ad24e4bf014498cfc8e1fcfb796660cb9ee01eab8c373d000000000000000615129d22cae6102281862555234992df4cf8d1f5f0d930ce5bee7005a7369b4be06ee9d607422cbe611cf1f2917eccd3bfb9464d50f3d6275cdf62532f36fee8",
+      "envelopeDigest": "0xb309670823e3c33982d6aee0e465013e6d03e461e4fdc2a34d290057288801d1"
+    },
+    {
+      "seq": "7",
+      "recordText": "{\"recordId\":\"POS-2026-0021\",\"kind\":\"position-snapshot\",\"instrument\":\"XS9999999991\",\"holder\":\"COUNTERPARTY-A\",\"quantity\":\"2500000\",\"asOf\":\"2026-08-05T17:00:00Z\"}",
+      "nonce": "0x33669a948feb4249e5d2c187",
+      "aad": "0x015be7cd098a9193fd81ad24e4bf014498cfc8e1fcfb796660cb9ee01eab8c373d0000000000000007",
+      "ciphertext": "0x0ba70b76f234db74c6e6225fe63bd9a84a8d2ae9bbbaa87b859e505154e242387d6765fd813cdcbd17b0ff665375ad29ebf7a000c94ec49bb27037af87ae39d8f2a7382a0f02f116df5c565b95a2979d18ff1b5391f279d24f200342e6d748c14252ada8e986aefad7586a0ddabff17a8e537c9a4b456205f0ef6d86eaabee73c7a1bfcc584a41106149beb988aeef3390a26b89c6ba62976ef56680cbb3b5b42f0d1625cb942ce134968df072db599b",
+      "ciphertextDigest": "0xb318f07ad010c1e99f7c6c2c778eea7aab7968239124417f9ebe785743be797d",
+      "prevEnvelopeDigest": "0xb309670823e3c33982d6aee0e465013e6d03e461e4fdc2a34d290057288801d1",
+      "envelope": "0x015be7cd098a9193fd81ad24e4bf014498cfc8e1fcfb796660cb9ee01eab8c373d0000000000000007b318f07ad010c1e99f7c6c2c778eea7aab7968239124417f9ebe785743be797db309670823e3c33982d6aee0e465013e6d03e461e4fdc2a34d290057288801d1",
+      "envelopeDigest": "0xbbddff3fe97a7e2f3ed4f0d33e606311a379a3604a18dea8ff9f8dee5b84594a"
+    },
+    {
+      "seq": "8",
+      "recordText": "{\"recordId\":\"COR-2026-0008\",\"kind\":\"corporate-action\",\"instrument\":\"XS9999999992\",\"event\":\"partial-redemption\",\"fraction\":\"0.10\",\"payDate\":\"2026-08-20\",\"status\":\"scheduled\"}",
+      "nonce": "0x8522dfe5ca9a9058e039fcf5",
+      "aad": "0x015be7cd098a9193fd81ad24e4bf014498cfc8e1fcfb796660cb9ee01eab8c373d0000000000000008",
+      "ciphertext": "0x74185ac33afea277337d25d76de0223492bc5f66aa4879af6fc577e6cac0b70c78be11b93e87289e35d87809ee1533d6863f1e6e5f447887661da29bae10688eed56c0844b36148c323adc8f44936e8ba7beac2761288e49813997799025bdf63957903822a9120221f0ba0d860a9ea36eab677563b64c60e18f085d40de081caeb66d000f2195b1b0155f69432f79300b1c3059c8646b9c49411110465e58b784d06ea2f9497eb28ad084c29ffa9d46baa24792f050de863965c523fd",
+      "ciphertextDigest": "0xbd01e58004a839d31e6d20c35df24dd894242a5d7b19a98f658e3fb6299d3f44",
+      "prevEnvelopeDigest": "0xbbddff3fe97a7e2f3ed4f0d33e606311a379a3604a18dea8ff9f8dee5b84594a",
+      "envelope": "0x015be7cd098a9193fd81ad24e4bf014498cfc8e1fcfb796660cb9ee01eab8c373d0000000000000008bd01e58004a839d31e6d20c35df24dd894242a5d7b19a98f658e3fb6299d3f44bbddff3fe97a7e2f3ed4f0d33e606311a379a3604a18dea8ff9f8dee5b84594a",
+      "envelopeDigest": "0xff854a9b9cf69b083fd4e87455ddb1fdddee416faff69103b4458fc8bfac5677"
+    },
+    {
+      "seq": "9",
+      "recordText": "{\"recordId\":\"SET-2026-0006\",\"kind\":\"settlement\",\"instrument\":\"XS9999999993\",\"counterparty\":\"COUNTERPARTY-C\",\"notional\":\"415000.00\",\"currency\":\"GBP\",\"valueDate\":\"2026-08-06\",\"status\":\"confirmed\"}",
+      "nonce": "0x33a48a48700d75adb2680a94",
+      "aad": "0x015be7cd098a9193fd81ad24e4bf014498cfc8e1fcfb796660cb9ee01eab8c373d0000000000000009",
+      "ciphertext": "0x6c19093117d6684c84ef2ef699be61c69329da79ed6cd37a125435c2a326f18b375180978ddea85ef942f73df1a651048707e906b0a5734b91856f86fdf0a8cc458a15e2483cd1746537beb8a79e9f6ff9aebc0a3f7c94b11aae9e4123424ea1d8df583e79a0fb872126686caf2f5a76c9286bc33ac9dd693b053d0cf5e4ab5e1299af9814764fc2407e20a09c732bf0709ed79cbc47b0c0c24f7c8b8e152a5e0c6058509027123619706636f6f07a97743c4639002e7091b1d49558d1bcc333ec59f105411d2ec35047aed0c5bdcd93a86d",
+      "ciphertextDigest": "0x098789c4e8aa7af2d8108083fe234dc9ab90bf7ab28569605cb5fab7d6e913e1",
+      "prevEnvelopeDigest": "0xff854a9b9cf69b083fd4e87455ddb1fdddee416faff69103b4458fc8bfac5677",
+      "envelope": "0x015be7cd098a9193fd81ad24e4bf014498cfc8e1fcfb796660cb9ee01eab8c373d0000000000000009098789c4e8aa7af2d8108083fe234dc9ab90bf7ab28569605cb5fab7d6e913e1ff854a9b9cf69b083fd4e87455ddb1fdddee416faff69103b4458fc8bfac5677",
+      "envelopeDigest": "0xb81a28074f6872ef79dc4ef11f6b8e344072d9a4796eb7f32dfdf94297f57293"
+    }
+  ]
+}

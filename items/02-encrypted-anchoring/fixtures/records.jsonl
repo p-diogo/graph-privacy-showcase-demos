@@ -1,0 +1,10 @@
+{"recordId":"SET-2026-0001","kind":"settlement","instrument":"XS9999999991","counterparty":"COUNTERPARTY-A","notional":"2500000.00","currency":"EUR","valueDate":"2026-08-03","status":"confirmed"}
+{"recordId":"SET-2026-0002","kind":"settlement","instrument":"XS9999999991","counterparty":"COUNTERPARTY-B","notional":"1750000.00","currency":"EUR","valueDate":"2026-08-03","status":"confirmed"}
+{"recordId":"COR-2026-0007","kind":"corporate-action","instrument":"XS9999999991","event":"coupon","rate":"0.0325","payDate":"2026-08-15","status":"scheduled"}
+{"recordId":"SET-2026-0003","kind":"settlement","instrument":"XS9999999992","counterparty":"COUNTERPARTY-A","notional":"900000.00","currency":"USD","valueDate":"2026-08-04","status":"confirmed"}
+{"recordId":"KYC-2026-0044","kind":"attestation","subject":"COUNTERPARTY-C","assertion":"eligibility-review-passed","reviewer":"COMPLIANCE-DESK-2","effective":"2026-08-04"}
+{"recordId":"SET-2026-0004","kind":"settlement","instrument":"XS9999999992","counterparty":"COUNTERPARTY-C","notional":"3200000.00","currency":"USD","valueDate":"2026-08-05","status":"confirmed"}
+{"recordId":"SET-2026-0005","kind":"settlement","instrument":"XS9999999993","counterparty":"COUNTERPARTY-B","notional":"640000.00","currency":"GBP","valueDate":"2026-08-05","status":"amended","amends":"SET-2026-0002"}
+{"recordId":"POS-2026-0021","kind":"position-snapshot","instrument":"XS9999999991","holder":"COUNTERPARTY-A","quantity":"2500000","asOf":"2026-08-05T17:00:00Z"}
+{"recordId":"COR-2026-0008","kind":"corporate-action","instrument":"XS9999999992","event":"partial-redemption","fraction":"0.10","payDate":"2026-08-20","status":"scheduled"}
+{"recordId":"SET-2026-0006","kind":"settlement","instrument":"XS9999999993","counterparty":"COUNTERPARTY-C","notional":"415000.00","currency":"GBP","valueDate":"2026-08-06","status":"confirmed"}

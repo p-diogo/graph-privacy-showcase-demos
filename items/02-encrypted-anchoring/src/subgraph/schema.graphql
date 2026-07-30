@@ -1,0 +1,84 @@
+"""
+An anchor stream, identified by the random 32-byte streamId in each envelope.
+The identifier carries no semantic content: it says nothing about who owns the
+stream or what the records contain.
+"""
+type Stream @entity(immutable: false) {
+  "streamId (32 bytes)"
+  id: Bytes!
+  "Distinct (streamId, seq) positions anchored so far."
+  anchorCount: BigInt!
+  "Highest seq seen. Null until the first well-formed anchor."
+  latestSeq: BigInt
+  "Envelope digest of the highest-seq anchor: the head of the hash chain."
+  headEnvelopeDigest: Bytes
+  "True once two different envelopes have been anchored at the same seq."
+  hasConflicts: Boolean!
+  conflictCount: BigInt!
+  firstBlock: BigInt!
+  lastBlock: BigInt!
+  anchors: [Anchor!]! @derivedFrom(field: "stream")
+  conflicts: [ConflictingAnchor!]! @derivedFrom(field: "stream")
+}
+
+"""
+One anchored position in a stream: the first well-formed envelope seen at
+(streamId, seq). Existence, ordering and completeness are what this proves —
+never the content of the record, which is only ever present as a ciphertext
+digest.
+"""
+type Anchor @entity(immutable: false) {
+  "<streamId>-<seq>"
+  id: String!
+  stream: Stream!
+  seq: BigInt!
+  "keccak256 of the ciphertext. Nothing about the plaintext is derivable from it."
+  ciphertextDigest: Bytes!
+  "keccak256 of the previous envelope; zero at seq 0."
+  prevEnvelopeDigest: Bytes!
+  "keccak256 of this anchor's full 105-byte envelope."
+  envelopeDigest: Bytes!
+  "The raw envelope as posted, so a verifier can recompute every field."
+  envelope: Bytes!
+  submitter: Bytes!
+  txHash: Bytes!
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  "Identical re-submissions of the same envelope at this position."
+  duplicateCount: BigInt!
+}
+
+"""
+A second, different envelope anchored at a position that already had one.
+Recorded rather than resolved: the index reports what the chain contains and
+the checker adjudicates.
+"""
+type ConflictingAnchor @entity(immutable: true) {
+  "<streamId>-<seq>-<txHash>"
+  id: String!
+  stream: Stream!
+  seq: BigInt!
+  ciphertextDigest: Bytes!
+  prevEnvelopeDigest: Bytes!
+  envelopeDigest: Bytes!
+  envelope: Bytes!
+  submitter: Bytes!
+  txHash: Bytes!
+  blockNumber: BigInt!
+}
+
+"""
+A payload that could not be decoded as an envelope. Anyone may call postAnchor
+with anything; nothing is silently dropped.
+"""
+type MalformedAnchor @entity(immutable: true) {
+  "<txHash>-<keccak256(payload)>"
+  id: String!
+  "WRONG_LENGTH | UNSUPPORTED_VERSION"
+  reason: String!
+  payloadLength: BigInt!
+  payload: Bytes!
+  submitter: Bytes!
+  txHash: Bytes!
+  blockNumber: BigInt!
+}

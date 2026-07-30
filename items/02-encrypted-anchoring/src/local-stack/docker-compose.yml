@@ -1,0 +1,60 @@
+# Local graph-node stack for item 02.
+#
+# The chain is a local anvil node reached at host.docker.internal:8545. The
+# `traces` capability is declared because a call-handler data source makes
+# graph-node require it: graph-node computes required node capabilities as
+# "traces: any data source has a call handler or a call-filtered block handler"
+# and fetches calls with the Parity-style `trace_filter` RPC. Anvil 1.4.4
+# implements `trace_filter`, which is what makes a fully local run possible.
+#
+# Nothing here touches a public network. Sepolia and the decentralized network
+# are the item's next tranche and are not exercised by this file.
+#
+# Host ports are deliberately non-default (18000/18020/18030/15001/15432, chain
+# on 18545) so this stack can run beside another graph-node stack on the same
+# machine without fighting it for ports. Container-internal ports are unchanged.
+name: item02-anchoring
+
+services:
+  graph-node:
+    image: graphprotocol/graph-node:latest
+    ports:
+      - "18000:8000" # GraphQL
+      - "18001:8001" # GraphQL websocket
+      - "18020:8020" # JSON-RPC admin (deploy)
+      - "18030:8030" # index-node status API (POIs live here)
+      - "18040:8040" # metrics
+    depends_on:
+      - ipfs
+      - postgres
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    environment:
+      postgres_host: postgres
+      postgres_user: graph-node
+      postgres_pass: let-me-in
+      postgres_db: graph-node
+      ipfs: "ipfs:5001"
+      ethereum: "anvil-local:archive,traces:http://host.docker.internal:18545"
+      GRAPH_LOG: info
+      ETHEREUM_POLLING_INTERVAL: "500"
+      ETHEREUM_REORG_THRESHOLD: "0"
+      ETHEREUM_ANCESTOR_COUNT: "1"
+      GRAPH_ETHEREUM_MAX_BLOCK_RANGE_SIZE: "1000"
+
+  ipfs:
+    image: ipfs/kubo:latest
+    ports:
+      - "15001:5001"
+
+  postgres:
+    image: postgres:17-alpine
+    ports:
+      - "15432:5432"
+    command: ["postgres", "-cshared_preload_libraries=pg_stat_statements", "-cmax_connections=200"]
+    environment:
+      POSTGRES_USER: graph-node
+      POSTGRES_PASSWORD: let-me-in
+      POSTGRES_DB: graph-node
+      # graph-node requires a C-locale, UTF-8 database.
+      POSTGRES_INITDB_ARGS: "-E UTF8 --locale=C"

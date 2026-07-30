@@ -1,0 +1,20 @@
+# Secrets. Never commit.
+.env
+.env.*
+!.env.example
+
+# Foundry output for this deploy project.
+out/
+cache/
+broadcast/
+
+# Symlinks into src/contracts/lib and src/contracts/src, created by prepare.sh.
+# Those point at EthSystems' code and their pinned submodules; none of it is
+# ours to commit.
+lib/
+
+# Deployment artefacts. The canonical values are recorded by hand in
+# <repo>/deploy/canonical.json, which IS committed; these are the raw outputs a
+# run happens to produce, including dry-run ones.
+artifacts/
+artifacts-dryrun/

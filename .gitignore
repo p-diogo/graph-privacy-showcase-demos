@@ -1,0 +1,13 @@
+# Build outputs and dependencies — never committed
+target/
+node_modules/
+dist/
+build/
+out/
+cache/
+broadcast/
+.local/
+*.log
+
+# Secrets never belong here
+.env

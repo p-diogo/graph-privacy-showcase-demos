@@ -1,0 +1,38 @@
+{
+  "name": "item-02-encrypted-anchoring",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Encrypted payload anchoring: anchor-writer CLI, call-handler subgraph, completeness checker (graph-privacy-showcase item 02)",
+  "license": "GPL-2.0-or-later",
+  "type": "module",
+  "engines": {
+    "node": ">=22"
+  },
+  "bin": {
+    "anchor-writer": "./dist/anchor-writer/cli.js",
+    "completeness-checker": "./dist/completeness-checker/cli.js"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test": "vitest run",
+    "test:unit": "vitest run tests/unit",
+    "test:integration": "vitest run tests/integration",
+    "anchor-writer": "node dist/anchor-writer/cli.js",
+    "completeness-checker": "node dist/completeness-checker/cli.js",
+    "tamper": "node dist/tools/tamper.js",
+    "manifest": "node dist/tools/gen-manifest.js",
+    "contracts:test": "forge test --root src/contracts",
+    "golden:regen": "node dist/tools/gen-golden.js"
+  },
+  "dependencies": {
+    "@noble/ciphers": "2.2.0",
+    "@noble/hashes": "2.2.0",
+    "viem": "2.55.10"
+  },
+  "devDependencies": {
+    "@types/node": "22.20.1",
+    "typescript": "5.9.3",
+    "vitest": "3.2.7"
+  }
+}

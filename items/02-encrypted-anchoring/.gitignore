@@ -1,0 +1,17 @@
+node_modules/
+dist/
+out/
+cache/
+broadcast/
+src/contracts/lib/
+src/subgraph/generated/
+src/subgraph/build/
+src/subgraph/subgraph.yaml
+src/subgraph/subgraph.badserver-gap.yaml
+src/subgraph/subgraph.badserver-chain.yaml
+.local/
+*.log
+
+# Rendered by deploy/04-render-manifest.sh from the recorded canonical
+# deployment. Generated, never committed.
+src/subgraph/subgraph.sepolia.yaml

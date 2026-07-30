@@ -1,0 +1,32 @@
+{
+  "source": "gateway",
+  "description": "gateway https://gateway.thegraph.com/api/deployments/id/QmWcifKxjEKSg1nVerGXjmF5jbydj4RKtQgVvvxJBFyVs6 (attestation recorded, not verified here)",
+  "streamId": "0x0c0bf6a287a135b35900881fe941de67087970677cb4153c8d02961c9970e1ef",
+  "pinnedBlock": null,
+  "attestationCaptured": true,
+  "ok": true,
+  "exitCode": 0,
+  "findings": [],
+  "notes": [
+    {
+      "code": "DUPLICATE",
+      "seq": "0",
+      "detail": "1 identical re-submission(s) of this envelope were anchored; benign, recorded for completeness"
+    },
+    {
+      "code": "MALFORMED",
+      "seq": null,
+      "detail": "an undecodable payload was posted to the anchor contract (WRONG_LENGTH, tx 0x752bb69cf25dc3149113684152847a9576694fdf92d320de994d86f94a9063c3); recorded, not silently dropped — anyone may call postAnchor"
+    }
+  ],
+  "summary": {
+    "disclosedCount": 10,
+    "servedCount": 10,
+    "duplicateCount": "1",
+    "conflictCount": 0,
+    "malformedCount": 1,
+    "checkedLinks": 10,
+    "unresolvableLinks": 0
+  },
+  "crossCheckDifferences": null
+}

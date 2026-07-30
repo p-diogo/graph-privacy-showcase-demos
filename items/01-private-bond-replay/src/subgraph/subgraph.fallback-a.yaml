@@ -1,0 +1,45 @@
+# Fallback A (spec §4.6): block handler + eth_call, no trace dependency.
+#
+# Drop-in replacement for subgraph.yaml when the network go/no-go gate finds
+# trace serving unavailable. Same schema, same commitment log at the same leaf
+# indices — which is what the replay CLI rebuilds roots from, so reconciliation
+# and root replay are unchanged.
+#
+# The capability differences are real and documented in src/mapping-fallback-a.ts:
+# no nullifiers, no claimed roots, and `sourceFunction` is UNKNOWN throughout.
+# A consumer can detect which path served it by inspecting those values rather
+# than trusting a label.
+#
+# Cost note: this polls the contract every block, so it is materially more
+# expensive to index than the call-handler design and gets slower as the
+# commitment array grows.
+
+specVersion: 1.0.0
+description: >-
+  Anchor surface of EthSystems' private-bond PoC, indexed without trace-capable
+  chain data. Indexes public chain state only; provides no privacy of any kind.
+repository: https://github.com/graphprotocol/graph-privacy-showcase
+schema:
+  file: ./schema.graphql
+dataSources:
+  - kind: ethereum/contract
+    name: PrivateBond
+    network: '{{network}}'
+    source:
+      address: '{{address}}'
+      abi: PrivateBond
+      startBlock: {{startBlock}}
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.9
+      language: wasm/assemblyscript
+      file: ./src/mapping-fallback-a.ts
+      entities:
+        - Bond
+        - Commitment
+        - LifecycleCall
+      abis:
+        - name: PrivateBond
+          file: ./abis/PrivateBond.json
+      blockHandlers:
+        - handler: handleBlock

@@ -1,0 +1,6 @@
+{
+  "_comment": "Default manifest values, used when build/subgraph-config.json does not exist yet. Lets codegen and the mapping unit tests run on a clean checkout, before any chain has been seeded. The address is the deterministic anvil deploy address the seed script always produces; a live run overwrites this file's role with the real generated config.",
+  "network": "mainnet",
+  "address": "0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0",
+  "startBlock": 0
+}

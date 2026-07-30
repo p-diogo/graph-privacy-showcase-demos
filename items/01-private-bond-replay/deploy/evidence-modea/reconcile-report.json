@@ -1,0 +1,207 @@
+{
+  "schema": "bond-replay/reconcile-report/1",
+  "deployment": "QmdfH3RytY2t5arbFehPmL4wyzejRaRVmN5PyhyKVJPiaz",
+  "contract": "0x0262b19FF2Fe455f43750442e7B32072D87059b1",
+  "bond_id": "0x4fa70ac1719c2bc2414780925b865735615b835f2b84f2831ea9c6e69b3d08a3",
+  "bond_id_string": "XF0000000001",
+  "pinned_block_number": 11376372,
+  "pinned_block_hash": "0x6233d259192e9ad3be002906a8ef5a3f47424570ce37886bebb374371be23779",
+  "attestation": {
+    "checks": [
+      {
+        "step": "responseCID",
+        "outcome": "pass",
+        "detail": "keccak256(response bytes) == 0xb8b00282294903af2e270f92fcb74c86fd23f1db81292120197b23a851b3e09a"
+      },
+      {
+        "step": "requestCID",
+        "outcome": "pass",
+        "detail": "keccak256(gateway-canonical request) == 0xf142c5fabf21a8b207a06c5f5e4783bd0b7a559b353d073623c57b44612b6311"
+      },
+      {
+        "step": "subgraphDeploymentID",
+        "outcome": "pass",
+        "detail": "QmdfH3RytY2t5arbFehPmL4wyzejRaRVmN5PyhyKVJPiaz == 0xe3a4d72ca2618738e7314d3139ed8978afe94d5ff2c93717ac38b0e75bc959f7"
+      },
+      {
+        "step": "eip712Recovery",
+        "outcome": "pass",
+        "detail": "recovered allocation 0x29B13Fa45da325aE45DeaAA82E62b7F5e037e8C1 under domain (chainId 42161, disputeManager 0x0Ab2B043138352413Bb02e67E626a70320E3BD46)"
+      }
+    ],
+    "recovered_allocation": "0x29B13Fa45da325aE45DeaAA82E62b7F5e037e8C1",
+    "result": "pass",
+    "means": "The recovered address signed these exact request and response bytes for this deployment. Whether it is an allocation with stake behind it is established only by signer resolution against the network subgraph; without that step this is a well-formed signature by an unidentified key. Even fully resolved it is attribution, not validation: it does not establish that the served data is correct, only that an identifiable party is answerable for it."
+  },
+  "records": [
+    {
+      "leaf_index": 0,
+      "record_file": "bond_issuer_1000001.json",
+      "value": 100000000,
+      "owner": "0x2f0409f7962f6673570d88b917021c615ea575c2654391718439eb354f9be8f3",
+      "recomputed_commitment": "0x264a5e0e792bfd5c5d8db9fa4773fe9149909213421e98b0ffeb7fa5516cdbcb",
+      "served_commitment": "0x264a5e0e792bfd5c5d8db9fa4773fe9149909213421e98b0ffeb7fa5516cdbcb",
+      "outcome": "pass",
+      "detail": "recomputed commitment matches the served anchor at this leaf index"
+    },
+    {
+      "leaf_index": 1,
+      "record_file": "bond_issuer_1000002.json",
+      "value": 0,
+      "owner": "0x2f0409f7962f6673570d88b917021c615ea575c2654391718439eb354f9be8f3",
+      "recomputed_commitment": "0x2abee61b17f9cc31db253ee705366e7428a81187549fd6ae5e9262f95489d301",
+      "served_commitment": "0x2abee61b17f9cc31db253ee705366e7428a81187549fd6ae5e9262f95489d301",
+      "outcome": "pass",
+      "detail": "recomputed commitment matches the served anchor at this leaf index"
+    },
+    {
+      "leaf_index": 2,
+      "record_file": "bond_investor-a_2000001.json",
+      "value": 10000000,
+      "owner": "0x18ee99c097765e4fd87de4afc964fbe371c775da1b0d3a7b1033520ea26571f0",
+      "recomputed_commitment": "0x2e9e5b1c2e4f7b81b18409f6cbd102a777dd76ca3daddc470143c2853b28f0a9",
+      "served_commitment": "0x2e9e5b1c2e4f7b81b18409f6cbd102a777dd76ca3daddc470143c2853b28f0a9",
+      "outcome": "pass",
+      "detail": "recomputed commitment matches the served anchor at this leaf index"
+    },
+    {
+      "leaf_index": 3,
+      "record_file": "bond_issuer_2000002.json",
+      "value": 90000000,
+      "owner": "0x2f0409f7962f6673570d88b917021c615ea575c2654391718439eb354f9be8f3",
+      "recomputed_commitment": "0x0100a81e8d17b4ee1df37a0e8595456a2338ba62b2ad98233b87e8222aaf732c",
+      "served_commitment": "0x0100a81e8d17b4ee1df37a0e8595456a2338ba62b2ad98233b87e8222aaf732c",
+      "outcome": "pass",
+      "detail": "recomputed commitment matches the served anchor at this leaf index"
+    },
+    {
+      "leaf_index": 4,
+      "record_file": "bond_investor-b_3000001.json",
+      "value": 10000000,
+      "owner": "0x217b0b30fa095b128f5299425e2e2d3092f7c0971159cbbf6385cccc14485db8",
+      "recomputed_commitment": "0x17c85ab5f8a3b62a6b740245ecf2ca4031ca5f36b8d7e8c2023cde329cc15a70",
+      "served_commitment": "0x17c85ab5f8a3b62a6b740245ecf2ca4031ca5f36b8d7e8c2023cde329cc15a70",
+      "outcome": "pass",
+      "detail": "recomputed commitment matches the served anchor at this leaf index"
+    },
+    {
+      "leaf_index": 5,
+      "record_file": "bond_issuer_3000002.json",
+      "value": 90000000,
+      "owner": "0x2f0409f7962f6673570d88b917021c615ea575c2654391718439eb354f9be8f3",
+      "recomputed_commitment": "0x185638a6719fc9294abe6399477f6da5602600ab264217ab640b0511e898fa9f",
+      "served_commitment": "0x185638a6719fc9294abe6399477f6da5602600ab264217ab640b0511e898fa9f",
+      "outcome": "pass",
+      "detail": "recomputed commitment matches the served anchor at this leaf index"
+    }
+  ],
+  "anchor_accounting": {
+    "served_leaf_count": 8,
+    "disclosed_count": 6,
+    "burn_output_zero_count": 2,
+    "unaccounted_leaf_indices": [],
+    "missing_leaf_indices": [],
+    "outcome": "pass",
+    "detail": "every served anchor is either a disclosed record's recomputed commitment or a manifest-listed structural burn output, and every disclosed leaf was served"
+  },
+  "root_replay": [
+    {
+      "after_call": "mint",
+      "leaf_count": 1,
+      "rebuilt_root": "0x264a5e0e792bfd5c5d8db9fa4773fe9149909213421e98b0ffeb7fa5516cdbcb",
+      "known_on_chain": true,
+      "outcome": "pass",
+      "detail": "root rebuilt from the served log is recorded in knownRoots on chain"
+    },
+    {
+      "after_call": "mintBatch",
+      "leaf_count": 2,
+      "rebuilt_root": "0x243a1d9096387fadfabf72873f8ad95027ce91996125958d2270074d7956850d",
+      "known_on_chain": true,
+      "outcome": "pass",
+      "detail": "root rebuilt from the served log is recorded in knownRoots on chain"
+    },
+    {
+      "after_call": "transfer",
+      "leaf_count": 4,
+      "rebuilt_root": "0x1b487c4a73de9a5b5547719702811362c5f770b2cdbf01d855a9cf0b20937b6f",
+      "known_on_chain": true,
+      "outcome": "pass",
+      "detail": "root rebuilt from the served log is recorded in knownRoots on chain"
+    },
+    {
+      "after_call": "atomicSwap",
+      "leaf_count": 6,
+      "rebuilt_root": "0x035a2d06e48c8e330c30503fcef396ce3b96a727aa88af72461f459ac7815d48",
+      "known_on_chain": true,
+      "outcome": "pass",
+      "detail": "root rebuilt from the served log is recorded in knownRoots on chain"
+    },
+    {
+      "after_call": "burn",
+      "leaf_count": 8,
+      "rebuilt_root": "0x126e90bab3bc67f06928fc11db0bd71cddf2dc2de80226c6ea284d4a2abed4bf",
+      "known_on_chain": true,
+      "outcome": "pass",
+      "detail": "root rebuilt from the served log is recorded in knownRoots on chain"
+    }
+  ],
+  "on_chain_cross_check": [
+    {
+      "leaf_index": 0,
+      "served": "0x264a5e0e792bfd5c5d8db9fa4773fe9149909213421e98b0ffeb7fa5516cdbcb",
+      "on_chain": "0x264a5e0e792bfd5c5d8db9fa4773fe9149909213421e98b0ffeb7fa5516cdbcb",
+      "outcome": "pass"
+    },
+    {
+      "leaf_index": 1,
+      "served": "0x2abee61b17f9cc31db253ee705366e7428a81187549fd6ae5e9262f95489d301",
+      "on_chain": "0x2abee61b17f9cc31db253ee705366e7428a81187549fd6ae5e9262f95489d301",
+      "outcome": "pass"
+    },
+    {
+      "leaf_index": 2,
+      "served": "0x2e9e5b1c2e4f7b81b18409f6cbd102a777dd76ca3daddc470143c2853b28f0a9",
+      "on_chain": "0x2e9e5b1c2e4f7b81b18409f6cbd102a777dd76ca3daddc470143c2853b28f0a9",
+      "outcome": "pass"
+    },
+    {
+      "leaf_index": 3,
+      "served": "0x0100a81e8d17b4ee1df37a0e8595456a2338ba62b2ad98233b87e8222aaf732c",
+      "on_chain": "0x0100a81e8d17b4ee1df37a0e8595456a2338ba62b2ad98233b87e8222aaf732c",
+      "outcome": "pass"
+    },
+    {
+      "leaf_index": 4,
+      "served": "0x17c85ab5f8a3b62a6b740245ecf2ca4031ca5f36b8d7e8c2023cde329cc15a70",
+      "on_chain": "0x17c85ab5f8a3b62a6b740245ecf2ca4031ca5f36b8d7e8c2023cde329cc15a70",
+      "outcome": "pass"
+    },
+    {
+      "leaf_index": 5,
+      "served": "0x185638a6719fc9294abe6399477f6da5602600ab264217ab640b0511e898fa9f",
+      "on_chain": "0x185638a6719fc9294abe6399477f6da5602600ab264217ab640b0511e898fa9f",
+      "outcome": "pass"
+    },
+    {
+      "leaf_index": 6,
+      "served": "0x191b974f6ce4faf272e27461991abcf0338132a37ca993b2d96f6a12c950668b",
+      "on_chain": "0x191b974f6ce4faf272e27461991abcf0338132a37ca993b2d96f6a12c950668b",
+      "outcome": "pass"
+    },
+    {
+      "leaf_index": 7,
+      "served": "0x1b46b8f96cf5e9e28072722f07c2c45085931fcfb99e86b283f013c0707fc195",
+      "on_chain": "0x1b46b8f96cf5e9e28072722f07c2c45085931fcfb99e86b283f013c0707fc195",
+      "outcome": "pass"
+    }
+  ],
+  "result": "pass",
+  "failures": [],
+  "scope": [
+    "Completeness is with respect to on-chain anchors, never off-chain reality: a record the issuer never anchored is invisible to this check. This is not a proof of reserves.",
+    "The attestation is a signature, not a validity proof. Where the signer resolves to a staked allocation it makes a wrong answer attributable and slashable; it never makes an answer correct. A run that did not resolve the signer has not established stake at all.",
+    "Root agreement is anchored in the chain, read from the operator's own RPC endpoint. A serving layer that alters the anchor log fails this check even when its response carries a perfectly valid attestation.",
+    "This run leaks its own subject: the gateway and each serving indexer observe which deployment was audited, the full query text, and when. Read privacy does not exist today; see item 06."
+  ]
+}

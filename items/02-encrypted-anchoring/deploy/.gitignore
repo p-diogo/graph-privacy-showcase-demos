@@ -1,0 +1,25 @@
+# Secrets. Never commit.
+.env
+.env.*
+!.env.example
+
+# Foundry output for this deploy project.
+out/
+cache/
+broadcast/
+
+# Symlinks into ../src/contracts, created by prepare.sh.
+lib/
+
+# Deployment artefacts. The canonical values are recorded by hand in
+# <repo>/deploy/canonical.json, which IS committed; these are the raw outputs a
+# run happens to produce, including dry-run ones.
+artifacts/
+artifacts-dryrun/
+
+# Belt and braces: the stream keyfile, archive and disclosure bundle are
+# required to live outside the repository and the scripts refuse otherwise.
+# If one ever lands here anyway, it must not be committable.
+*keyfile*.json
+*archive*.json
+disclosure/

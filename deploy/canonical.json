@@ -1,0 +1,157 @@
+{
+  "_README": [
+    "This is the schema. Copy to canonical.json and fill in as the runbook",
+    "produces each value; canonical.json IS committed \u2014 it is the address book",
+    "the whole verify-only reproducer mode reads.",
+    "",
+    "Rules:",
+    "  1. Every value here is copied from a confirmed on-chain or Studio",
+    "     result, never from a plan. If a step has not run, leave the field",
+    "     null. A wrong address recorded here becomes a wrong address in",
+    "     someone else's verification run.",
+    "  2. No secrets. Not the deployer key, not the stream key, not the",
+    "     gateway API key. The stream keyfile lives outside the repository",
+    "     (items/02-encrypted-anchoring/deploy/_env.sh enforces it).",
+    "  3. Read by: items/01-.../deploy/05-render-manifest.sh,",
+    "     items/02-.../deploy/04-render-manifest.sh,",
+    "     deploy/smoke-assumption-002.sh --item, and both items' Mode-A",
+    "     (verify-only) reproducer paths."
+  ],
+  "schemaVersion": 1,
+  "recordedAt": "2026-07-29T14:59:56Z",
+  "recordedBy": "program owner (assembled by session from confirmed on-chain/Studio results)",
+  "chain": {
+    "name": "sepolia",
+    "chainId": 11155111,
+    "note": "Ethereum Sepolia. Contracts live here. Subgraphs are PUBLISHED on Arbitrum One (the mainnet protocol, real GRT) \u2014 publish chain and indexed chain are different things."
+  },
+  "protocol": {
+    "publishNetwork": "arbitrum-one",
+    "gateway": "https://gateway.thegraph.com",
+    "networkSubgraphId": "DZz4kDTdmzWLWsV373w2bSmoar3umKKH9y82SUKr5qmp",
+    "note": "Query shape: POST {gateway}/api/subgraphs/id/{subgraphId} or /api/deployments/id/{deploymentId}, with 'Authorization: Bearer <key>'."
+  },
+  "items": {
+    "01-private-bond-replay": {
+      "pocSha": "94f1e5c94b6c4896977ae68094b99479eef4c371",
+      "pocRepo": "https://github.com/ethsystems/pocs",
+      "contracts": {
+        "privateBond": "0x0262b19FF2Fe455f43750442e7B32072D87059b1",
+        "verifier": "0xA89d708F1114f00eE4A0228a745Ef792D18ec49D",
+        "verifierKind": "MockVerifier",
+        "verifierNote": "MockVerifier always returns true. This deployment is NOT evidence that the PoC's ZK layer works. See items/01-private-bond-replay/deploy/script/DeploySepolia.s.sol for why it is also currently unsatisfiable."
+      },
+      "deployTx": "0xf164b1da06717fd4eb3591d19ff4e14519a94a2b5dcb4c970b2d1f8eb3246e04",
+      "deployBlock": 11376008,
+      "bondIdString": "XF0000000001",
+      "bondId": "0x4fa70ac1719c2bc2414780925b865735615b835f2b84f2831ea9c6e69b3d08a3",
+      "maturityDate": 1785338088,
+      "seed": {
+        "leafCount": 8,
+        "disclosedRecords": 6,
+        "structuralBurnOutputs": 2,
+        "entryPointsExercised": [
+          "mint",
+          "mintBatch",
+          "transfer",
+          "atomicSwap",
+          "burn"
+        ],
+        "lifecycleTxs": {
+          "mintBatchTransferAtomicSwap": "confirmed on-chain pre-maturity (6 commitments, transfer root verified in knownRoots)",
+          "burn": "0xfbb5535998f73df86f0cb8e1c069b44fc52f8bde433d903d16d0297628914e94"
+        },
+        "anchoredRoots": [
+          "0x243a1d9096387fadfabf72873f8ad95027ce91996125958d2270074d7956850d"
+        ],
+        "lifecycleStatus": "COMPLETE \u2014 all five entry points on-chain; 04-verify-chain.sh PASS 2026-07-29 (5/5 roots in knownRoots, 8 leaves)"
+      },
+      "artifacts": {
+        "recordsManifest": "items/01-private-bond-replay/deploy/artifacts/records-manifest.json",
+        "recordsDir": "items/01-private-bond-replay/deploy/artifacts/records",
+        "note": "Regenerable byte-for-byte with: bond-replay seed-fixtures --maturity <maturityDate>. Publish these alongside canonical.json so a Mode-A reproducer has the disclosed set without re-deriving it."
+      },
+      "subgraph": {
+        "variant": "call-handlers",
+        "variantNote": "'call-handlers' is the primary design. 'fallback-a' means the ASSUMPTION-002 gate failed and the block-handler + eth_call design became the default (spec \u00a74.6).",
+        "studioSlug": "private-bond-anchors-sepolia",
+        "deploymentId": "QmdfH3RytY2t5arbFehPmL4wyzejRaRVmN5PyhyKVJPiaz",
+        "subgraphId": "6Jq7LpWsX2CdNBJsBU4tiK4y21SDn5E3uUnLzNkNsUR1",
+        "publishTx": null,
+        "network": "sepolia",
+        "startBlock": 11376008,
+        "specVersion": "1.0.0",
+        "curationSignalGrt": null,
+        "explorer": "https://thegraph.com/explorer/subgraphs/6Jq7LpWsX2CdNBJsBU4tiK4y21SDn5E3uUnLzNkNsUR1",
+        "published": "2026-07-29, Arbitrum One"
+      }
+    },
+    "02-encrypted-anchoring": {
+      "contracts": {
+        "anchorDataEdge": "0x88AE18d29C20267441C5393787f719fa3f334Dcb",
+        "selector": "0x330a5405",
+        "selectorNote": "postAnchor(bytes). The contract is permissionless: anyone may post. The index reports what the chain contains and the checker adjudicates."
+      },
+      "deployTx": "0xfffd6adf2aaf62189f5721ffb56565525c3d70fac907fd51424ccccd9dfda784",
+      "deployBlock": 11376118,
+      "stream": {
+        "streamId": "0x0c0bf6a287a135b35900881fe941de67087970677cb4153c8d02961c9970e1ef",
+        "anchorCount": 10,
+        "startBlock": 11376124,
+        "endBlock": 11376138,
+        "edgeCases": {
+          "malformedPayloadTx": "0x752bb69cf25dc3149113684152847a9576694fdf92d320de994d86f94a9063c3",
+          "duplicateSeq0Tx": "0x14abd6a4a1daffb7e245a329199f279b41ace14baf3e95929a73a625bed0186b",
+          "note": "Deliberate. They make the canonical index visibly report MalformedAnchor and duplicateCount rather than dropping them. Both are notes in the checker, not failures."
+        },
+        "keyfileLocation": "OUTSIDE the repository \u2014 recorded here as a description, never a copy. Default: $HOME/.graph-privacy-showcase/canonical/item02-stream-keyfile.json",
+        "disclosurePublishedAt": null,
+        "disclosureNote": "The disclosure bundle contains the stream key by design \u2014 it is what makes a stranger's verification possible. Publishing it means anyone can post conflicting anchors at existing seqs; the checker flags those as CONFLICT.",
+        "verifyStatus": "03-verify-chain.sh PASS 2026-07-29 \u2014 raw block scan blocks 11376124..11376337: 10/10 records match anchors, contiguous, hash chain holds; duplicate + malformed edge cases recorded",
+        "disclosureLocation": "OUTSIDE the repository by design (bundle contains the stream key): $HOME/.graph-privacy-showcase/canonical/item02-disclosure/ {keyfile.json, manifest.json, records.jsonl}"
+      },
+      "subgraph": {
+        "variant": "shape-1-calldata",
+        "variantNote": "'shape-1-calldata' is the primary design. 'shape-2-eventful' means the ASSUMPTION-002 gate failed and the contract gained an event (spec \u00a74.6) \u2014 at which point E4's wording changes from 'pure calldata' to 'calldata + event' in the same session.",
+        "studioSlug": "anchor-data-edge-sepolia",
+        "deploymentId": "QmWcifKxjEKSg1nVerGXjmF5jbydj4RKtQgVvvxJBFyVs6",
+        "subgraphId": "46mk4GwpMkQEsR5UG3mFwSmYVU7ii838cvQGNt5WEhFb",
+        "publishTx": null,
+        "network": "sepolia",
+        "startBlock": 11376118,
+        "specVersion": "1.3.0",
+        "curationSignalGrt": null,
+        "explorer": "https://thegraph.com/explorer/subgraphs/46mk4GwpMkQEsR5UG3mFwSmYVU7ii838cvQGNt5WEhFb",
+        "published": "2026-07-29, Arbitrum One"
+      }
+    }
+  },
+  "assumption002": {
+    "status": "pending",
+    "statusValues": [
+      "pending",
+      "met",
+      "not-met"
+    ],
+    "gateRunAt": "2026-07-29 (day 0 baseline)",
+    "distinctIndexers": [],
+    "upgradeIndexerObserved": "0xbdfb5ee5a2abf4fc7bb1bd1221067aef7f9de491 (allocated 1 GRT to both within minutes of publish; serving with attestations via targeted route; does NOT count toward the two)",
+    "evidenceDir": "deploy/evidence/assumption-002",
+    "traceFlavour": null,
+    "traceFlavourValues": [
+      "trace_filter-rpc",
+      "extended-firehose"
+    ],
+    "note": "Run deploy/smoke-assumption-002.sh --item 01 and --item 02. The upgrade indexer is recorded but never counted toward the two."
+  },
+  "etherscanVerification": {
+    "status": "all four contracts Pass - Verified, 2026-07-29",
+    "contracts": [
+      "PrivateBond",
+      "PoseidonT3",
+      "MockVerifier",
+      "AnchorDataEdge"
+    ]
+  },
+  "firstLiveAttestations": "2026-07-29: gateway queries on both deployments returned graph-attestation headers (EIP-712, requestCID/responseCID bound); targeted per-indexer route confirmed working in production; bundles in deploy/evidence/assumption-002/"
+}

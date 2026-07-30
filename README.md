@@ -62,10 +62,30 @@ cast call 0x0262b19FF2Fe455f43750442e7B32072D87059b1 "knownRoots(bytes32)(bool)"
 
 ## Contents
 
+- `deploy/canonical.json` — the address book of record. Every deployment id,
+  contract address, stream id and seed count used below is read from here, and
+  every value in it was copied from a confirmed on-chain or Studio result.
+- `items/01-private-bond-replay/` — the `bond-replay` auditor CLI (Rust):
+  attested fetch, offline EIP-712 attestation verification with signer→stake
+  resolution, disclosure reconciliation with on-chain root replay, and a tamper
+  mode. `deploy/artifacts/` holds the disclosed record set and its manifest.
+- `items/02-encrypted-anchoring/` — the anchor-writer and `completeness-checker`
+  CLIs (TypeScript): deterministic AES-256-GCM-SIV envelopes, disclosure
+  reconciliation against the served index, and a raw-chain cross-check that puts
+  no component from The Graph in the trust path.
 - `subgraphs/private-bond-anchors/` — schema, call-handler manifest
   (mustache-templated + rendered Sepolia manifest), mappings.
 - `subgraphs/anchor-data-edge/` — same shape; the 105-byte envelope decoder
   lives in `src/anchor.ts`.
+
+Each item's `REPRODUCE.md` has two paths: **Mode A** verifies the canonical
+deployment above (you deploy nothing and spend nothing on-chain), **Mode B**
+rebuilds the whole stack from zero on your own machine, tamper demos included.
+
+One gate, stated plainly: item 02's checker reconciles a *disclosure* —
+plaintext records plus the stream key — and the canonical disclosure bundle is
+not published, because it contains that key. Everything else here is runnable
+by anyone today.
 
 Part of a broader program by The Graph community mapping shipped Graph
 capabilities to institutional privacy patterns. Questions/issues welcome.

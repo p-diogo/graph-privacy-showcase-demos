@@ -1,0 +1,7 @@
+{
+  "format": "item02-anchor-keyfile",
+  "version": 1,
+  "warning": "THROWAWAY DEMO KEY, PUBLISHED ON PURPOSE. Both values are keccak256 of a fixed string, so anyone can re-derive them and reproduce the golden vectors: streamId = keccak256(\"graph-privacy-showcase/item-02/demo-stream-id\"), streamKey = keccak256(\"graph-privacy-showcase/item-02/demo-stream-key-THROWAWAY\"). Never anchor anything you care about with this key. Item 02 makes no custody, KMS or HSM claim.",
+  "streamId": "0x5be7cd098a9193fd81ad24e4bf014498cfc8e1fcfb796660cb9ee01eab8c373d",
+  "streamKey": "0xeb7fb7faae56b8169d716b878297e1f428124d99eeb2366ec77ca5a120a3f34c"
+}

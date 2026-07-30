@@ -1,0 +1,23 @@
+# Canonical-deployment Foundry project, separate from src/contracts/ on
+# purpose: that project is wired to the local harness (its fs_permissions point
+# at build/, its scripts read build/deployment.json). Keeping the Sepolia
+# scripts in their own root means a canonical run cannot overwrite local
+# evidence, and a local run cannot be mistaken for a canonical one.
+#
+# `lib/` is symlinks into ../src/contracts/, created by prepare.sh, so both
+# projects compile the same PoC bytes at the same pin.
+[profile.default]
+src = "script"
+script = "script"
+out = "out"
+libs = ["lib"]
+solc = "0.8.28"
+optimizer = true
+optimizer_runs = 200
+
+# The scripts exchange the lifecycle fixtures and the deployment record with
+# the Rust CLI as JSON. Scoped to the artefact directories, not the whole root.
+fs_permissions = [
+  { access = "read-write", path = "./artifacts" },
+  { access = "read-write", path = "./artifacts-dryrun" },
+]

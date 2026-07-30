@@ -1,0 +1,71 @@
+# Local graph-node stack for the item-01 integration tests.
+#
+# This is a hermetic, local-only stack: graph-node, its Postgres store, and an
+# IPFS node for manifest storage. It indexes the anvil chain the seed script
+# runs, and nothing here touches a public network.
+#
+# The `traces` capability on the Ethereum provider is the load-bearing bit:
+# call handlers require trace-capable chain data, and graph-node will not run a
+# call-handler data source against a provider that does not advertise it.
+# anvil 1.4.4 implements `trace_filter` (verified in BUILD-REPORT.md), which is
+# what makes the primary design testable locally rather than only the no-trace
+# fallback.
+
+services:
+  ipfs:
+    image: ipfs/kubo:v0.34.1
+    container_name: bondreplay-ipfs
+    ports:
+      - '5001:5001'
+
+  postgres:
+    image: postgres:16-alpine
+    container_name: bondreplay-postgres
+    command:
+      - postgres
+      - -cshared_preload_libraries=pg_stat_statements
+      - -cmax_connections=200
+    environment:
+      POSTGRES_USER: graph-node
+      POSTGRES_PASSWORD: let-me-in
+      POSTGRES_DB: graph-node
+      # graph-node requires C locale collation for deterministic ordering.
+      POSTGRES_INITDB_ARGS: '-E UTF8 --locale=C'
+    ports:
+      - '5432:5432'
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U graph-node']
+      interval: 2s
+      timeout: 3s
+      retries: 30
+
+  graph-node:
+    image: graphprotocol/graph-node:v0.40.1
+    container_name: bondreplay-graph-node
+    depends_on:
+      postgres:
+        condition: service_healthy
+      ipfs:
+        condition: service_started
+    ports:
+      - '8000:8000' # GraphQL HTTP
+      - '8001:8001' # GraphQL WS
+      - '8020:8020' # JSON-RPC admin (deploy)
+      - '8030:8030' # index-node status API (POIs live here)
+      - '8040:8040' # metrics
+    extra_hosts:
+      - 'host.docker.internal:host-gateway'
+    environment:
+      postgres_host: postgres
+      postgres_user: graph-node
+      postgres_pass: let-me-in
+      postgres_db: graph-node
+      ipfs: 'ipfs:5001'
+      # `traces` is what permits call-handler data sources.
+      ethereum: 'mainnet:archive,traces:http://host.docker.internal:8545'
+      GRAPH_LOG: info
+      ETHEREUM_POLLING_INTERVAL: '500'
+      # A local dev chain has no reorgs to speak of; keep the reorg threshold
+      # small so the head advances promptly in tests.
+      ETHEREUM_REORG_THRESHOLD: '1'
+      GRAPH_ETHEREUM_MAX_BLOCK_RANGE_SIZE: '1000'

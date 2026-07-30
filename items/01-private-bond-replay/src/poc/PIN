@@ -1,0 +1,17 @@
+# Upstream artifact this item deploys, unmodified.
+#
+# ethsystems/pocs — the EthSystems (ex-EF Institutional Privacy Task Force)
+# open-source PoC collection. We deploy pocs/private-bond/custom-utxo.
+# Licensed MIT OR Apache-2.0 (LICENSE files at repo root): third-party
+# deployment is permitted.
+#
+# Nothing under build/poc/ is our code. It is fetched at the pin below and
+# never modified. Every artifact we produce that involves it says so.
+
+POC_REPO=https://github.com/ethsystems/pocs.git
+POC_SHA=94f1e5c94b6c4896977ae68094b99479eef4c371
+
+# Submodules of the custom-utxo Foundry project, pinned by the PoC itself.
+# Recorded here so a re-fetch is reproducible even if upstream moves them.
+SUBMODULE_FORGE_STD_PATH=pocs/private-bond/custom-utxo/contracts/lib/forge-std
+SUBMODULE_OPENZEPPELIN_PATH=pocs/private-bond/custom-utxo/contracts/lib/openzeppelin-contracts

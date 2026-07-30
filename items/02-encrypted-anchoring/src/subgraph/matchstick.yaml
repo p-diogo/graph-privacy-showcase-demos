@@ -1,0 +1,3 @@
+# Mapping unit tests live with the rest of the item's tests, not inside the
+# subgraph package (spec §7 keeps one test plan per item).
+testsFolder: ../../tests/subgraph

@@ -1,0 +1,19 @@
+# Canonical-deployment Foundry project for item 02, separate from
+# src/contracts/ so a canonical run and a local run can never be confused for
+# one another or overwrite each other's artefacts.
+#
+# `lib/` is symlinks into ../src/contracts/, created by prepare.sh.
+[profile.default]
+src = "script"
+script = "script"
+out = "out"
+libs = ["lib"]
+solc = "0.8.28"
+optimizer = true
+optimizer_runs = 200
+evm_version = "cancun"
+
+fs_permissions = [
+  { access = "read-write", path = "./artifacts" },
+  { access = "read-write", path = "./artifacts-dryrun" },
+]

@@ -1,0 +1,5 @@
+{
+  "extends": "./tsconfig.json",
+  "include": ["src/anchor-core", "src/anchor-writer", "src/completeness-checker", "src/tools"],
+  "exclude": ["node_modules", "dist", "tests", "src/subgraph", "src/contracts"]
+}
