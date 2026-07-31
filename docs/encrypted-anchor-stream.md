@@ -268,4 +268,5 @@ repository's `REPRODUCE.md`, Mode B.
   [pattern-compliance-monitoring](https://github.com/ethsystems/map/blob/3bca7a15d454c53275264d687bb8879130d62ef2/patterns/pattern-compliance-monitoring.md)
 - The anchoring shape: [GRC-0001 "Data Edge"](https://github.com/graphprotocol/graph-improvement-proposals/blob/9df2b290c2b1e05546bf5c5578527341e3c079aa/grcs/0001-data-edge.md) ·
   [GIP-0025 forum thread](https://forum.thegraph.com/t/gip-0025-dataedge/3161)
+- **Check this stream live, in your browser:** [▶ the verification page](./verify.html#anchors) — rebuilds all ten anchors from raw calldata and re-computes the hash chain, no API key, nothing from The Graph in the trust path
 - All demonstrations in this program: [the matrix](./matrix.md)

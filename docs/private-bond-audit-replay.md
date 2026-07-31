@@ -277,4 +277,5 @@ taken on trust.
   [PoCs repository](https://github.com/ethsystems/pocs) (private-bond PoC, deployed unmodified at pin `94f1e5c`) ·
   [the pattern this executes](https://github.com/ethsystems/map/blob/3bca7a15d454c53275264d687bb8879130d62ef2/patterns/pattern-l2-encrypted-offchain-audit.md) ·
   [the use-case](https://github.com/ethsystems/map/blob/3bca7a15d454c53275264d687bb8879130d62ef2/use-cases/private-bonds.md)
+- **Check this deployment live, in your browser:** [▶ the verification page](./verify.html#bond) — reads the anchored commitments and roots straight from Sepolia, no API key, nothing from The Graph in the trust path
 - All demonstrations in this program: [the matrix](./matrix.md)
