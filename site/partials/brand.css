@@ -1,0 +1,76 @@
+/* The Graph Design System tokens — values verified against graphprotocol/gds
+   (packages/css/styles/theme.css) on 2026-07-31. Do not invent values here;
+   GDS is the source of truth. Semantic names follow GDS, not raw scales. */
+:root{
+  color-scheme: light dark;
+
+  --brand-500:#6f4cff;  --brand-400:#8c70ff;  --brand-700:#5138ba;
+  --space-1800:#080618; --space-1700:#0c0a1d; --space-1600:#16132a;
+  --space-1500:#1d1a30; --space-1400:#242236;
+  --foam-100:#fafafa;   --foam-200:#f3f3f4;   --foam-300:#ececec;
+  --foam-400:#e3e3e3;   --foam-800:#afafb6;   --foam-1000:#7d7d87;
+  --solar-400:#ffb934;  --solar-700:#9d680b;
+  --starfield-500:#4bca81; --starfield-800:#255643;
+  --galactic-500:#4c9eff;
+
+  /* semantic — light */
+  --bg-canvas:#ffffff;
+  --bg-subtle:var(--foam-100);
+  --bg-muted:var(--foam-200);
+  --text-default:var(--space-1800);
+  --text-muted:var(--foam-1000);
+  --border-muted:var(--foam-400);
+  --border-subtle:var(--foam-300);
+  --accent:var(--brand-500);
+  --tag-live-bg:var(--starfield-800);
+  --tag-spec-bg:var(--space-1400);
+
+  --radius:8px;
+}
+@media (prefers-color-scheme: dark){
+  :root{
+    --bg-canvas:var(--space-1800);
+    --bg-subtle:var(--space-1700);
+    --bg-muted:var(--space-1600);
+    --text-default:#ffffff;
+    --text-muted:var(--foam-800);
+    --border-muted:var(--space-1400);
+    --border-subtle:var(--space-1500);
+    --accent:var(--brand-400);
+  }
+}
+:root[data-theme="dark"]{
+  --bg-canvas:var(--space-1800); --bg-subtle:var(--space-1700);
+  --bg-muted:var(--space-1600); --text-default:#ffffff;
+  --text-muted:var(--foam-800); --border-muted:var(--space-1400);
+  --border-subtle:var(--space-1500); --accent:var(--brand-400);
+}
+:root[data-theme="light"]{
+  --bg-canvas:#ffffff; --bg-subtle:var(--foam-100); --bg-muted:var(--foam-200);
+  --text-default:var(--space-1800); --text-muted:var(--foam-1000);
+  --border-muted:var(--foam-400); --border-subtle:var(--foam-300);
+  --accent:var(--brand-500);
+}
+
+/* Euclid Circular A is the official face and ships in GDS (private repo).
+   It is a licensed commercial typeface, so it is NOT vendored into this public
+   repository; Poppins is the brand's sanctioned fallback. To switch: drop the
+   woff2 files into site/partials/fonts/ and uncomment the @font-face block. */
+/* @font-face{font-family:EuclidCircular;font-weight:400;font-display:swap;
+     src:url('fonts/EuclidCircularA-Regular.woff2') format('woff2')}
+   @font-face{font-family:EuclidCircular;font-weight:500;font-display:swap;
+     src:url('fonts/EuclidCircularA-Medium.woff2') format('woff2')} */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap');
+
+/* GDS weight discipline: 400 body, 500 headings, 600 display only. */
+body{font-family:EuclidCircular,Poppins,system-ui,-apple-system,sans-serif;font-weight:400}
+h1,h2,h3,h4,th,strong,b{font-weight:500}
+h1{font-weight:600}
+
+/* GDS Tag: filled pill, white text, sentence case, regular weight */
+.tag{display:inline-flex;align-items:center;height:24px;padding:0 8px;
+  border-radius:999px;color:#fff;font-size:12px;line-height:1;font-weight:400;
+  white-space:nowrap}
+.tag-live{background:var(--tag-live-bg)}
+.tag-spec{background:var(--tag-spec-bg)}
+.tag-solar{background:var(--solar-700)}

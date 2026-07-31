@@ -30,61 +30,56 @@ const shell = ({ title, body, nav }) => `<!doctype html>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>${title}</title>
 <meta name="description" content="Proof-of-concepts showing The Graph serving the read and audit path for confidential systems on public Ethereum. Demo-grade evidence on fictional data.">
+<link rel="icon" href="https://storage.thegraph.com/favicons/64x64.png">
+<link rel="stylesheet" href="./brand.css">
 <style>
-  :root{
-    --bg:#ffffff; --fg:#16161d; --muted:#5b5b6b; --line:#e3e3ea;
-    --card:#fafafc; --accent:#4c1d95; --code:#f4f4f8;
-  }
-  @media (prefers-color-scheme: dark){
-    :root{ --bg:#0f0f14; --fg:#ececf1; --muted:#a0a0b0; --line:#2a2a35;
-      --card:#17171f; --accent:#c4b5fd; --code:#1c1c26; }
-  }
-  :root[data-theme="dark"]{ --bg:#0f0f14; --fg:#ececf1; --muted:#a0a0b0; --line:#2a2a35;
-    --card:#17171f; --accent:#c4b5fd; --code:#1c1c26; }
-  :root[data-theme="light"]{ --bg:#ffffff; --fg:#16161d; --muted:#5b5b6b; --line:#e3e3ea;
-    --card:#fafafc; --accent:#4c1d95; --code:#f4f4f8; }
-
   *{box-sizing:border-box}
-  body{margin:0;background:var(--bg);color:var(--fg);
-    font:16px/1.65 ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+  body{margin:0;background:var(--bg-canvas);color:var(--text-default);
+    font-size:16px;line-height:1.65}
   .wrap{max-width:920px;margin:0 auto;padding:0 1.25rem 5rem}
-  header.site{border-bottom:1px solid var(--line);margin-bottom:2.25rem}
-  header.site .inner{max-width:920px;margin:0 auto;padding:1rem 1.25rem;
-    display:flex;gap:1.25rem;align-items:baseline;flex-wrap:wrap}
-  header.site .brand{font-weight:650;letter-spacing:-.01em}
-  header.site nav{display:flex;gap:1rem;margin-left:auto;flex-wrap:wrap}
-  header.site nav a{color:var(--muted);text-decoration:none;font-size:.92rem}
+  header.site{border-bottom:1px solid var(--border-muted);margin-bottom:2.25rem;
+    background:var(--bg-subtle)}
+  header.site .inner{max-width:920px;margin:0 auto;padding:.85rem 1.25rem;
+    display:flex;gap:1.25rem;align-items:center;flex-wrap:wrap}
+  .logo{display:inline-flex;align-items:center;justify-content:center;
+    width:32px;height:32px;background:var(--brand-500);border-radius:8px;flex:none}
+  .brand{display:flex;align-items:center;gap:.6rem;font-weight:500;
+    letter-spacing:-.01em;color:var(--text-default);text-decoration:none}
+  header.site nav{display:flex;gap:1.15rem;margin-left:auto;flex-wrap:wrap}
+  header.site nav a{color:var(--text-muted);text-decoration:none;font-size:14px}
   header.site nav a:hover{color:var(--accent)}
-  h1{font-size:2rem;line-height:1.2;letter-spacing:-.022em;margin:.4rem 0 .6rem}
-  h2{font-size:1.3rem;letter-spacing:-.012em;margin:2.4rem 0 .5rem}
-  h3{font-size:1.05rem;margin:1.8rem 0 .4rem}
+  h1{font-size:40px;line-height:1.15;letter-spacing:-.025em;margin:.5rem 0 .6rem}
+  h2{font-size:24px;letter-spacing:-.015em;margin:2.6rem 0 .5rem}
+  h3{font-size:18px;margin:1.9rem 0 .4rem}
   p,li{max-width:74ch}
   a{color:var(--accent)}
   code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:.86em;
-    background:var(--code);padding:.12em .38em;border-radius:4px}
-  pre{background:var(--code);padding:.9rem 1rem;border-radius:8px;overflow-x:auto;
-    border:1px solid var(--line)}
-  pre code{background:none;padding:0;font-size:.83rem;line-height:1.55}
-  blockquote{margin:1.5rem 0;padding:.9rem 1.15rem;border-left:3px solid var(--accent);
-    background:var(--card);border-radius:0 8px 8px 0}
+    background:var(--bg-muted);padding:.12em .38em;border-radius:4px}
+  pre{background:var(--bg-muted);padding:.9rem 1rem;border-radius:var(--radius);
+    overflow-x:auto;border:1px solid var(--border-subtle)}
+  pre code{background:none;padding:0;font-size:13px;line-height:1.55}
+  blockquote{margin:1.6rem 0;padding:1rem 1.2rem;border-left:3px solid var(--brand-500);
+    background:var(--bg-muted);border-radius:0 var(--radius) var(--radius) 0}
   blockquote h3{margin-top:0}
   blockquote p:last-child{margin-bottom:0}
-  .tablewrap{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:1.1rem 0}
-  table{border-collapse:collapse;font-size:.88rem;min-width:100%}
-  th,td{text-align:left;padding:.5rem .7rem;border-bottom:1px solid var(--line);
+  .tablewrap{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:1.1rem 0;
+    border:1px solid var(--border-subtle);border-radius:var(--radius)}
+  table{border-collapse:collapse;font-size:14px;min-width:100%}
+  th,td{text-align:left;padding:.6rem .75rem;border-bottom:1px solid var(--border-subtle);
     vertical-align:top}
-  th{font-weight:600;color:var(--muted);font-size:.78rem;text-transform:uppercase;
-    letter-spacing:.04em;white-space:nowrap}
-  hr{border:0;border-top:1px solid var(--line);margin:2.5rem 0}
-  em{color:var(--muted)}
-  footer.site{border-top:1px solid var(--line);margin-top:3.5rem;padding-top:1.25rem;
-    color:var(--muted);font-size:.86rem}
+  tr:last-child td{border-bottom:0}
+  th{color:var(--text-muted);font-size:12px;text-transform:uppercase;
+    letter-spacing:.04em;white-space:nowrap;background:var(--bg-subtle)}
+  hr{border:0;border-top:1px solid var(--border-subtle);margin:2.6rem 0}
+  em{color:var(--text-muted)}
+  footer.site{border-top:1px solid var(--border-subtle);margin-top:3.5rem;
+    padding-top:1.25rem;color:var(--text-muted);font-size:14px}
   footer.site p{max-width:74ch}
 </style>
 </head>
 <body>
 <header class="site"><div class="inner">
-  <span class="brand">Graph Privacy Showcase</span>
+  <a class="brand" href="./index.html"><span class="logo" aria-hidden="true"><svg viewBox="0 0 32 32" fill="#fff" width="21" height="21"><path d="M14.2958 20.7692C9.17277 20.7692 5 16.6308 5 11.5385C5 6.44615 9.17277 2.30769 14.2958 2.30769C19.4188 2.30769 23.5915 6.44615 23.5915 11.5385C23.5915 16.6308 19.4188 20.7692 14.2958 20.7692ZM14.2958 5.38462C10.877 5.38462 8.09859 8.14359 8.09859 11.5385C8.09859 14.9333 10.877 17.6923 14.2958 17.6923C17.7146 17.6923 20.493 14.9333 20.493 11.5385C20.493 8.14359 17.7146 5.38462 14.2958 5.38462ZM16.9399 29.5487L23.1371 23.3949C23.7413 22.7949 23.7413 21.8205 23.1371 21.2205C22.5329 20.6205 21.5516 20.6205 20.9474 21.2205L14.7502 27.3744C14.146 27.9744 14.146 28.9487 14.7502 29.5487C15.0549 29.8513 15.4474 30 15.8451 30C16.2427 30 16.6404 29.8513 16.9399 29.5487ZM25.1408 2C24.1183 2 23.2817 2.83077 23.2817 3.84615C23.2817 4.86154 24.1183 5.69231 25.1408 5.69231C26.1634 5.69231 27 4.86154 27 3.84615C27 2.83077 26.1634 2 25.1408 2Z"/></svg></span><span>Graph Privacy Showcase</span></a>
   <nav>${nav}</nav>
 </div></header>
 <div class="wrap">
@@ -117,6 +112,16 @@ const relink = (html) =>
   html.replace(/href="(\.\/)?([A-Za-z0-9._-]+)\.md(#[^"]*)?"/g,
     (_m, dot, name, frag) => `href="${dot ?? ""}${name}.html${frag ?? ""}"`);
 
+// GDS Tag: a status label is a filled pill with white text, not free text.
+const TAGS = [
+  ["live — single indexer", "tag-live"],
+  ["spec-only", "tag-spec"],
+  ["upstream fix branches", "tag-spec"],
+];
+const tagStatuses = (html) =>
+  TAGS.reduce((acc, [label, cls]) =>
+    acc.replaceAll(`<td>${label}</td>`, `<td><span class="tag ${cls}">${label}</span></td>`), html);
+
 const wrapTables = (html) =>
   html.replace(/<table>[\s\S]*?<\/table>/g, (t) => `<div class="tablewrap">${t}</div>`);
 
@@ -135,13 +140,16 @@ for (const file of pages) {
   const name = file.replace(/\.md$/, ".html");
   const html = shell({
     title: `${titleOf(md, name)} — Graph Privacy Showcase`,
-    body: wrapTables(relink(marked.parse(md))),
+    body: wrapTables(tagStatuses(relink(marked.parse(md)))),
     nav: navFor(name),
   });
   await writeFile(join(OUT, name), html);
   if (file === ORDER[0]) await writeFile(join(OUT, "index.html"), html);
   console.log(`  rendered ${file} -> ${name}`);
 }
+
+await writeFile(join(OUT, "brand.css"), await readFile(join("partials", "brand.css"), "utf8"));
+console.log("  wrote    brand.css (GDS tokens)");
 
 // self-contained page: only its sibling links are rewritten (.md -> .html)
 const verify = await readFile(join(DOCS, "verify.html"), "utf8");

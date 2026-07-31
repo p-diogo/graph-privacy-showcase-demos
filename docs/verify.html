@@ -4,40 +4,62 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Verify it yourself — Graph Privacy Showcase</title>
+<link rel="icon" href="https://storage.thegraph.com/favicons/64x64.png">
 <style>
   :root{
-    --bg:#ffffff; --fg:#16161d; --muted:#5b5b6b; --line:#e3e3ea;
-    --card:#fafafc; --ok:#0f7b46; --bad:#b3261e; --wait:#7a6a00;
-    --accent:#4c1d95; --code:#f4f4f8;
+    color-scheme: light dark;
+    /* The Graph Design System tokens — verified against graphprotocol/gds
+       (packages/css/styles/theme.css). Kept inline because this page is
+       deliberately self-contained and must work opened straight from disk. */
+    --brand-500:#6f4cff; --brand-400:#8c70ff;
+    --space-1800:#080618; --space-1700:#0c0a1d; --space-1600:#16132a;
+    --space-1500:#1d1a30; --space-1400:#242236;
+    --foam-100:#fafafa; --foam-200:#f3f3f4; --foam-300:#ececec; --foam-400:#e3e3e3;
+    --foam-800:#afafb6; --foam-1000:#7d7d87;
+    --solar-400:#ffb934; --solar-700:#9d680b;
+    --starfield-500:#4bca81; --starfield-600:#3ea36c;
+    --sonja:#ff79c6;
+
+    --bg:#ffffff; --fg:var(--space-1800); --muted:var(--foam-1000);
+    --line:var(--foam-400); --card:var(--foam-200);
+    --ok:#317d58; --bad:#b3261e; --wait:#9d680b;
+    --accent:var(--brand-500); --code:var(--foam-200);
+    --radius:8px;
   }
   @media (prefers-color-scheme: dark){
-    :root{ --bg:#0f0f14; --fg:#ececf1; --muted:#a0a0b0; --line:#2a2a35;
-      --card:#17171f; --ok:#4ade80; --bad:#f87171; --wait:#fbbf24;
-      --accent:#c4b5fd; --code:#1c1c26; }
+    :root{ --bg:var(--space-1800); --fg:#ffffff; --muted:var(--foam-800);
+      --line:var(--space-1400); --card:var(--space-1600);
+      --ok:var(--starfield-500); --bad:var(--sonja); --wait:var(--solar-400);
+      --accent:var(--brand-400); --code:var(--space-1600); }
   }
-  :root[data-theme="dark"]{ --bg:#0f0f14; --fg:#ececf1; --muted:#a0a0b0; --line:#2a2a35;
-    --card:#17171f; --ok:#4ade80; --bad:#f87171; --wait:#fbbf24; --accent:#c4b5fd; --code:#1c1c26; }
-  :root[data-theme="light"]{ --bg:#ffffff; --fg:#16161d; --muted:#5b5b6b; --line:#e3e3ea;
-    --card:#fafafc; --ok:#0f7b46; --bad:#b3261e; --wait:#7a6a00; --accent:#4c1d95; --code:#f4f4f8; }
+  :root[data-theme="dark"]{ --bg:var(--space-1800); --fg:#ffffff; --muted:var(--foam-800);
+    --line:var(--space-1400); --card:var(--space-1600); --ok:var(--starfield-500);
+    --bad:var(--sonja); --wait:var(--solar-400); --accent:var(--brand-400);
+    --code:var(--space-1600); }
+  :root[data-theme="light"]{ --bg:#ffffff; --fg:var(--space-1800); --muted:var(--foam-1000);
+    --line:var(--foam-400); --card:var(--foam-200); --ok:#317d58; --bad:#b3261e;
+    --wait:#9d680b; --accent:var(--brand-500); --code:var(--foam-200); }
+
+  @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap');
 
   *{box-sizing:border-box}
-  body{margin:0;background:var(--bg);color:var(--fg);
-    font:16px/1.6 ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+  body{margin:0;background:var(--bg);color:var(--fg);font-size:16px;line-height:1.65;
+    font-weight:400;font-family:EuclidCircular,Poppins,system-ui,-apple-system,sans-serif}
   .wrap{max-width:920px;margin:0 auto;padding:2.5rem 1.25rem 5rem}
-  h1{font-size:1.9rem;line-height:1.25;margin:0 0 .5rem;letter-spacing:-.02em}
-  h2{font-size:1.15rem;margin:2.5rem 0 .35rem;letter-spacing:-.01em}
+  h1{font-size:40px;line-height:1.15;margin:0 0 .5rem;letter-spacing:-.025em;font-weight:600}
+  h2{font-size:24px;margin:2.6rem 0 .35rem;letter-spacing:-.015em;font-weight:500}
   p{margin:.6rem 0}
   .lede{color:var(--muted);font-size:1.05rem;max-width:64ch}
   .muted{color:var(--muted)}
   .small{font-size:.86rem}
   code,.mono{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:.85em}
-  .card{background:var(--card);border:1px solid var(--line);border-radius:10px;
+  .card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);
     padding:1rem 1.1rem;margin:1rem 0}
-  button{font:inherit;font-size:.95rem;padding:.5rem .95rem;border-radius:7px;
+  button{font:inherit;font-size:.95rem;padding:.5rem .95rem;border-radius:var(--radius);
     border:1px solid var(--line);background:var(--bg);color:var(--fg);cursor:pointer}
   button:hover{border-color:var(--accent)}
   button:disabled{opacity:.5;cursor:default}
-  button.primary{background:var(--accent);color:var(--bg);border-color:var(--accent);font-weight:600}
+  button.primary{background:var(--brand-500);color:#fff;border-color:var(--brand-500);font-weight:500}
   input.mono{padding:.45rem .6rem;border-radius:6px;border:1px solid var(--line);
     background:var(--bg);color:var(--fg);width:100%;max-width:100%}
   .row{display:flex;gap:.6rem;flex-wrap:wrap;align-items:center}
@@ -45,9 +67,9 @@
   table{border-collapse:collapse;width:100%;font-size:.9rem}
   th,td{text-align:left;padding:.4rem .6rem;border-bottom:1px solid var(--line);
     white-space:nowrap;vertical-align:top}
-  th{font-weight:600;color:var(--muted);font-size:.8rem;text-transform:uppercase;letter-spacing:.04em}
-  .ok{color:var(--ok);font-weight:600}
-  .bad{color:var(--bad);font-weight:600}
+  th{font-weight:500;color:var(--muted);font-size:.8rem;text-transform:uppercase;letter-spacing:.04em}
+  .ok{color:var(--ok);font-weight:500}
+  .bad{color:var(--bad);font-weight:500}
   .wait{color:var(--wait)}
   .status{margin:.5rem 0 0;font-size:.9rem}
   .note{border-left:3px solid var(--line);padding:.15rem 0 .15rem .9rem;color:var(--muted);
@@ -60,6 +82,7 @@
 <body>
 <div class="wrap">
 
+<div style="display:flex;align-items:center;gap:.7rem;margin-bottom:1.6rem"><span style="display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px;background:#6f4cff;border-radius:8px;flex:none"><svg viewBox="0 0 32 32" fill="#fff" width="21" height="21" aria-hidden="true"><path d="M14.2958 20.7692C9.17277 20.7692 5 16.6308 5 11.5385C5 6.44615 9.17277 2.30769 14.2958 2.30769C19.4188 2.30769 23.5915 6.44615 23.5915 11.5385C23.5915 16.6308 19.4188 20.7692 14.2958 20.7692ZM14.2958 5.38462C10.877 5.38462 8.09859 8.14359 8.09859 11.5385C8.09859 14.9333 10.877 17.6923 14.2958 17.6923C17.7146 17.6923 20.493 14.9333 20.493 11.5385C20.493 8.14359 17.7146 5.38462 14.2958 5.38462ZM16.9399 29.5487L23.1371 23.3949C23.7413 22.7949 23.7413 21.8205 23.1371 21.2205C22.5329 20.6205 21.5516 20.6205 20.9474 21.2205L14.7502 27.3744C14.146 27.9744 14.146 28.9487 14.7502 29.5487C15.0549 29.8513 15.4474 30 15.8451 30C16.2427 30 16.6404 29.8513 16.9399 29.5487ZM25.1408 2C24.1183 2 23.2817 2.83077 23.2817 3.84615C23.2817 4.86154 24.1183 5.69231 25.1408 5.69231C26.1634 5.69231 27 4.86154 27 3.84615C27 2.83077 26.1634 2 25.1408 2Z"/></svg></span><a href="matrix.md" style="font-weight:500;letter-spacing:-.01em;color:var(--fg);text-decoration:none">Graph Privacy Showcase</a></div>
 <h1>Verify it yourself</h1>
 <p class="lede">
   This page checks the two live demonstrations against Ethereum Sepolia
