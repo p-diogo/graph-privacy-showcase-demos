@@ -1,0 +1,17 @@
+{
+  "name": "graph-privacy-showcase-site",
+  "private": true,
+  "type": "module",
+  "description": "Renders docs/*.md into a static site for Cloudflare Pages. The markdown in docs/ stays the source of truth and keeps rendering on GitHub.",
+  "scripts": {
+    "build": "node build.mjs",
+    "serve": "node build.mjs && node --run serve:only",
+    "serve:only": "node -e \"const h=require('node:http'),f=require('node:fs'),p=require('node:path');h.createServer((q,s)=>{let u=q.url.split('?')[0];if(u.endsWith('/'))u+='index.html';const t=p.join('dist',u);f.readFile(t,(e,d)=>{if(e){s.writeHead(404);return s.end('not found')}s.writeHead(200,{'content-type':u.endsWith('.html')?'text/html':u.endsWith('.css')?'text/css':'application/octet-stream'});s.end(d)})}).listen(8788,()=>console.log('http://localhost:8788'))\""
+  },
+  "dependencies": {
+    "marked": "15.0.7"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}
