@@ -1,76 +1,202 @@
-/* The Graph Design System tokens — values verified against graphprotocol/gds
-   (packages/css/styles/theme.css) on 2026-07-31. Do not invent values here;
-   GDS is the source of truth. Semantic names follow GDS, not raw scales. */
-:root{
-  color-scheme: light dark;
+/* ---------------------------------------------------------------------------
+   The Graph Design System tokens.
 
-  --brand-500:#6f4cff;  --brand-400:#8c70ff;  --brand-700:#5138ba;
-  --space-1800:#080618; --space-1700:#0c0a1d; --space-1600:#16132a;
-  --space-1500:#1d1a30; --space-1400:#242236;
-  --foam-100:#fafafa;   --foam-200:#f3f3f4;   --foam-300:#ececec;
-  --foam-400:#e3e3e3;   --foam-800:#afafb6;   --foam-1000:#7d7d87;
-  --solar-400:#ffb934;  --solar-700:#9d680b;
-  --starfield-500:#4bca81; --starfield-800:#255643;
-  --galactic-500:#4c9eff;
+   Values read from graphprotocol/gds (packages/css/styles/theme.css) on
+   2026-07-31 — that repo is the source of truth, nothing here is invented.
 
-  /* semantic — light */
-  --bg-canvas:#ffffff;
-  --bg-subtle:var(--foam-100);
-  --bg-muted:var(--foam-200);
-  --text-default:var(--space-1800);
-  --text-muted:var(--foam-1000);
-  --border-muted:var(--foam-400);
-  --border-subtle:var(--foam-300);
-  --accent:var(--brand-500);
-  --tag-live-bg:var(--starfield-800);
-  --tag-spec-bg:var(--space-1400);
+   Dark is the default register and is declared on :root, not inside a media
+   query, so it renders correctly regardless of OS preference. Light is opt-in
+   via [data-theme="light"], set by the header toggle and persisted.
 
-  --radius:8px;
+   NOTE ON @import: it must precede every other rule or browsers drop it. Fonts
+   are loaded with <link> in the document head instead, which also lets us
+   preconnect. A previous revision put @import at the bottom of this file and
+   the webfont silently never loaded.
+--------------------------------------------------------------------------- */
+
+:root {
+  /* raw scales — do not theme-adapt */
+  --brand-400: #8c70ff;
+  --brand-500: #6f4cff;
+  --brand-600: #6545e8;
+  --brand-700: #5138ba;
+  --space-1300: #2d2a3f;
+  --space-1400: #242236;
+  --space-1500: #1d1a30;
+  --space-1600: #16132a;
+  --space-1700: #0c0a1d;
+  --space-1800: #080618;
+  --foam-100: #fafafa;
+  --foam-200: #f3f3f4;
+  --foam-300: #ececec;
+  --foam-400: #e3e3e3;
+  --foam-800: #afafb6;
+  --foam-1000: #7d7d87;
+  --solar-400: #ffb934;
+  --solar-700: #9d680b;
+  --starfield-400: #6fd59a;
+  --starfield-500: #4bca81;
+  --starfield-700: #317d58;
+  --starfield-800: #255643;
+  --galactic-500: #4c9eff;
+  --sonja-400: #ff8fce;
+
+  /* semantic — dark, the default */
+  --canvas: var(--space-1800);
+  --panel: var(--space-1700);
+  --surface: var(--space-1600);
+  --surface-hi: var(--space-1500);
+  --line: var(--space-1400);
+  --line-strong: var(--space-1300);
+  --ink: #ffffff;
+  --ink-muted: var(--foam-800);
+  --ink-subtle: var(--foam-1000);
+  --accent: var(--brand-400);
+  --accent-solid: var(--brand-500);
+  --ok: var(--starfield-400);
+  --ok-bg: var(--starfield-800);
+  --bad: var(--sonja-400);
+  --warn: var(--solar-400);
+  --warn-bg: var(--solar-700);
+  --focus: var(--brand-400);
+  --shadow: 0 1px 2px rgb(0 0 0 / .4), 0 8px 24px -12px rgb(0 0 0 / .6);
+  color-scheme: dark;
 }
-@media (prefers-color-scheme: dark){
-  :root{
-    --bg-canvas:var(--space-1800);
-    --bg-subtle:var(--space-1700);
-    --bg-muted:var(--space-1600);
-    --text-default:#ffffff;
-    --text-muted:var(--foam-800);
-    --border-muted:var(--space-1400);
-    --border-subtle:var(--space-1500);
-    --accent:var(--brand-400);
-  }
-}
-:root[data-theme="dark"]{
-  --bg-canvas:var(--space-1800); --bg-subtle:var(--space-1700);
-  --bg-muted:var(--space-1600); --text-default:#ffffff;
-  --text-muted:var(--foam-800); --border-muted:var(--space-1400);
-  --border-subtle:var(--space-1500); --accent:var(--brand-400);
-}
-:root[data-theme="light"]{
-  --bg-canvas:#ffffff; --bg-subtle:var(--foam-100); --bg-muted:var(--foam-200);
-  --text-default:var(--space-1800); --text-muted:var(--foam-1000);
-  --border-muted:var(--foam-400); --border-subtle:var(--foam-300);
-  --accent:var(--brand-500);
+
+:root[data-theme="light"] {
+  --canvas: #ffffff;
+  --panel: var(--foam-100);
+  --surface: var(--foam-200);
+  --surface-hi: var(--foam-300);
+  --line: var(--foam-400);
+  --line-strong: #d4d4d8;
+  --ink: var(--space-1800);
+  --ink-muted: #52525b;       /* 7.4:1 on foam-200; foam-1000 would fail AA */
+  --ink-subtle: var(--foam-1000);
+  --accent: var(--brand-600);  /* 4.9:1 on white; brand-500 is 4.1:1, fails AA */
+  --accent-solid: var(--brand-500);
+  --ok: #1c6b46;
+  --ok-bg: var(--starfield-700);
+  --bad: #a3204f;
+  --warn: #7a5108;
+  --warn-bg: var(--solar-700);
+  --focus: var(--brand-600);
+  --shadow: 0 1px 2px rgb(9 6 24 / .06), 0 8px 24px -12px rgb(9 6 24 / .18);
+  color-scheme: light;
 }
 
-/* Euclid Circular A is the official face and ships in GDS (private repo).
-   It is a licensed commercial typeface, so it is NOT vendored into this public
-   repository; Poppins is the brand's sanctioned fallback. To switch: drop the
-   woff2 files into site/partials/fonts/ and uncomment the @font-face block. */
-/* @font-face{font-family:EuclidCircular;font-weight:400;font-display:swap;
-     src:url('fonts/EuclidCircularA-Regular.woff2') format('woff2')}
-   @font-face{font-family:EuclidCircular;font-weight:500;font-display:swap;
-     src:url('fonts/EuclidCircularA-Medium.woff2') format('woff2')} */
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap');
+/* Product register: fixed rem scale, ratio ~1.2, one family throughout.
+   No fluid clamp headings — this is read at consistent DPI, in a task. */
+:root {
+  --t-11: .6875rem;
+  --t-12: .75rem;
+  --t-13: .8125rem;
+  --t-14: .875rem;
+  --t-16: 1rem;
+  --t-19: 1.1875rem;
+  --t-23: 1.4375rem;
+  --t-28: 1.75rem;
+  --t-34: 2.125rem;
 
-/* GDS weight discipline: 400 body, 500 headings, 600 display only. */
-body{font-family:EuclidCircular,Poppins,system-ui,-apple-system,sans-serif;font-weight:400}
-h1,h2,h3,h4,th,strong,b{font-weight:500}
-h1{font-weight:600}
+  --r-sm: 6px;
+  --r: 8px;
+  --r-pill: 999px;
 
-/* GDS Tag: filled pill, white text, sentence case, regular weight */
-.tag{display:inline-flex;align-items:center;height:24px;padding:0 8px;
-  border-radius:999px;color:#fff;font-size:12px;line-height:1;font-weight:400;
-  white-space:nowrap}
-.tag-live{background:var(--tag-live-bg)}
-.tag-spec{background:var(--tag-spec-bg)}
-.tag-solar{background:var(--solar-700)}
+  --sp-1: 4px;  --sp-2: 8px;  --sp-3: 12px; --sp-4: 16px;
+  --sp-5: 24px; --sp-6: 32px; --sp-7: 48px; --sp-8: 64px;
+
+  /* Euclid Circular A is the official face and ships in GDS, but that repo is
+     private and the typeface is commercially licensed, so it is not vendored
+     into this public repo. Poppins is the brand's sanctioned fallback. */
+  --font: "Euclid Circular A", Poppins, ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+
+  --ease: cubic-bezier(.22, 1, .36, 1);
+  --fast: 140ms;
+  --med: 220ms;
+
+  --z-sticky: 100;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  margin: 0;
+  background: var(--canvas);
+  color: var(--ink);
+  font-family: var(--font);
+  font-size: var(--t-16);
+  font-weight: 400;
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* GDS weight discipline: 400 body, 500 headings, 600 for the page title only. */
+h1, h2, h3, h4 { font-weight: 500; line-height: 1.25; letter-spacing: -.015em; margin: 0; }
+h1 { font-size: var(--t-34); font-weight: 600; letter-spacing: -.022em; text-wrap: balance; }
+h2 { font-size: var(--t-23); }
+h3 { font-size: var(--t-19); }
+p { text-wrap: pretty; }
+
+a { color: var(--accent); text-decoration-thickness: 1px; text-underline-offset: 2px; }
+a:hover { text-decoration-thickness: 2px; }
+
+:where(a, button, input, select, summary, [tabindex]):focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
+  border-radius: var(--r-sm);
+}
+
+code, .mono { font-family: var(--font-mono); font-size: .87em; font-variant-ligatures: none; }
+
+/* GDS Tag: filled pill, white text, sentence case, regular weight. The dot
+   carries the same information as the colour, for colour-blind readers. */
+.tag {
+  display: inline-flex; align-items: center; gap: 6px;
+  height: 22px; padding: 0 9px;
+  border-radius: var(--r-pill);
+  background: var(--surface-hi); color: var(--ink);
+  font-size: var(--t-12); line-height: 1; font-weight: 400; white-space: nowrap;
+}
+.tag::before {
+  content: ""; width: 6px; height: 6px; border-radius: 50%;
+  background: currentcolor; flex: none;
+}
+.tag-live { background: var(--ok-bg); color: #fff; }
+.tag-spec { background: var(--surface-hi); color: var(--ink-muted); }
+
+/* Header, shared by every surface including the standalone verify page. */
+.masthead { position: sticky; top: 0; z-index: var(--z-sticky);
+  background: color-mix(in srgb, var(--canvas) 88%, transparent);
+  backdrop-filter: saturate(140%) blur(8px);
+  border-bottom: 1px solid var(--line); }
+.masthead-inner { max-width: 1060px; margin: 0 auto;
+  padding: var(--sp-3) var(--sp-5); display: flex; align-items: center;
+  gap: var(--sp-5); flex-wrap: wrap; }
+.brand { display: inline-flex; align-items: center; gap: var(--sp-3);
+  color: var(--ink); text-decoration: none; font-weight: 500;
+  letter-spacing: -.01em; font-size: var(--t-14); }
+.brand:hover { text-decoration: none; }
+.mark { display: inline-flex; align-items: center; justify-content: center;
+  width: 30px; height: 30px; background: var(--brand-500);
+  border-radius: var(--r); flex: none; }
+.masthead nav { display: flex; align-items: center; gap: var(--sp-5);
+  margin-left: auto; flex-wrap: wrap; }
+.masthead nav a { color: var(--ink-muted); text-decoration: none;
+  font-size: var(--t-14); transition: color var(--fast) var(--ease); }
+.masthead nav a:hover { color: var(--ink); }
+.masthead nav a[aria-current="page"] { color: var(--ink); }
+
+.theme-toggle { display: inline-flex; align-items: center; justify-content: center;
+  width: 30px; height: 30px; padding: 0; border-radius: var(--r);
+  border: 1px solid var(--line); background: var(--surface); color: var(--ink-muted);
+  cursor: pointer; transition: color var(--fast) var(--ease),
+    border-color var(--fast) var(--ease), background var(--fast) var(--ease); }
+.theme-toggle:hover { color: var(--ink); border-color: var(--line-strong);
+  background: var(--surface-hi); }
+.theme-toggle svg { width: 15px; height: 15px; }
+.theme-toggle .sun { display: none; }
+:root[data-theme="light"] .theme-toggle .sun { display: block; }
+:root[data-theme="light"] .theme-toggle .moon { display: none; }
