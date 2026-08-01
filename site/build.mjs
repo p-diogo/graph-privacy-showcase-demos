@@ -13,6 +13,8 @@ import { join, basename } from "node:path";
 import { marked } from "marked";
 import { masthead, THEME_BOOT, THEME_SCRIPT, FONT_LINKS } from "./partials/head.mjs";
 
+const DIAGRAMS = join("partials", "diagrams");
+
 const DOCS = join("..", "docs");
 const OUT = "dist";
 
@@ -76,6 +78,11 @@ ${FONT_LINKS}
 
   hr { border: 0; border-top: 1px solid var(--line); margin: var(--sp-7) 0; }
 
+  figure.diagram { margin: var(--sp-6) 0; padding: var(--sp-4);
+    background: var(--panel); border: 1px solid var(--line);
+    border-radius: var(--r); overflow-x: auto; }
+  figure.diagram svg { display: block; min-width: 620px; }
+
   .colophon { border-top: 1px solid var(--line); margin-top: var(--sp-8);
     padding-top: var(--sp-5); color: var(--ink-muted); font-size: var(--t-13); }
   .colophon p { max-width: 72ch; }
@@ -133,6 +140,24 @@ const tagStatuses = (html) =>
 const wrapTables = (html) =>
   html.replace(/<table>[\s\S]*?<\/table>/g, (t) => `<div class="tablewrap">${t}</div>`);
 
+// A marker in the markdown becomes inline SVG here; on GitHub the mermaid fence
+// next to it renders instead. Inline (not <img>) so the diagram inherits the
+// page's theme tokens and switches with the light/dark toggle.
+const diagramStyle = await readFile(join(DIAGRAMS, "_style.svg"), "utf8");
+async function injectDiagrams(html) {
+  const markers = [...html.matchAll(/<!--\s*diagram:([a-z0-9-]+)\s*-->/g)];
+  for (const m of markers) {
+    const svg = (await readFile(join(DIAGRAMS, `${m[1]}.svg`), "utf8"))
+      .replace("<!--STYLE-->", diagramStyle);
+    // drop the mermaid fence that follows the marker; it is the GitHub fallback
+    const after = html.slice(m.index);
+    const fence = after.match(/<pre><code class="language-mermaid">[\s\S]*?<\/code><\/pre>/);
+    html = html.replace(m[0], svg);
+    if (fence && after.indexOf(fence[0]) < 400) html = html.replace(fence[0], "");
+  }
+  return html;
+}
+
 const titleOf = (md, fallback) => (md.match(/^#\s+(.+)$/m)?.[1] ?? fallback).trim();
 
 await rm(OUT, { recursive: true, force: true });
@@ -148,7 +173,7 @@ for (const file of pages) {
   const name = file.replace(/\.md$/, ".html");
   const html = shell({
     title: `${titleOf(md, name)} — Graph Privacy Showcase`,
-    body: wrapTables(tagStatuses(relink(marked.parse(md)))),
+    body: await injectDiagrams(wrapTables(tagStatuses(relink(marked.parse(md))))),
     nav: navFor(name),
   });
   await writeFile(join(OUT, name), html);

@@ -45,6 +45,32 @@ stand-in.
 
 ## How it works
 
+<!-- diagram:item-01 -->
+
+```mermaid
+flowchart LR
+  subgraph CONF["Confidential, off chain"]
+    ISS([Issuer]) --> REC["Bond records<br/>values, owners, amounts"]
+    INV([Investors])
+  end
+  subgraph CHAIN["Public chain — Sepolia"]
+    PB["PrivateBond<br/>commitments · knownRoots · nullifiers<br/>emits no events"]
+  end
+  subgraph GRAPH["The Graph"]
+    SG["Call-handler subgraph"] --> IDX["Staked indexers"] --> GW["Gateway<br/>EIP-712 attestation"]
+  end
+  AUD([Auditor]) --> CLI["bond-replay"]
+  ISS -- anchors --> PB
+  PB -- indexes --> SG
+  GW --> CLI
+  ISS -. discloses a scoped record set .-> AUD
+  CLI -- "replays roots against the chain, via its own node" --> PB
+```
+
+*The Graph never receives plaintext records, values, owners or keys. Correctness is
+established by the auditor replaying roots against the chain, which is why that
+path bypasses The Graph entirely.*
+
 **The contract emits no events.** `PrivateBond` keeps all anchor state in
 storage: an append-only `commitments` array, a `knownRoots` mapping holding
 every historical Merkle root (recomputed on-chain after every

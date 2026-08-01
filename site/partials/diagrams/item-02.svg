@@ -1,0 +1,94 @@
+<figure class="diagram">
+<svg class="dg" viewBox="0 0 760 430" role="img" width="100%"
+     aria-labelledby="d2t d2d" preserveAspectRatio="xMidYMid meet">
+<title id="d2t">Who does what in the encrypted anchor stream</title>
+<desc id="d2d">A record-keeper encrypts records client-side and posts only ciphertext
+digests, as raw calldata, to a no-op contract on Ethereum Sepolia that stores nothing
+and emits nothing. A call-handler subgraph published to The Graph's decentralized
+network turns those transactions into an index of existence, ordering and
+completeness, served by staked indexers through the gateway with an EIP-712
+attestation. A verifier receives a disclosure — plaintext records plus the stream
+key — and reconciles it against the served index, and separately against raw Sepolia
+blocks with no component from The Graph in the trust path. The Graph never receives
+plaintext or keys; only digests of ciphertext are ever public.</desc>
+<!--STYLE-->
+
+<!-- zone: confidential -->
+<rect class="dg-zone dg-zone-private" x="8" y="34" width="196" height="238"/>
+<text class="dg-zt" x="18" y="26">CONFIDENTIAL, OFF CHAIN</text>
+
+<ellipse class="dg-actor" cx="106" cy="70" rx="76" ry="20"/>
+<text class="dg-t" x="106" y="74" text-anchor="middle">Record-keeper</text>
+
+<rect class="dg-box" x="26" y="112" width="160" height="76"/>
+<text class="dg-t" x="106" y="136" text-anchor="middle">Records + stream key</text>
+<text class="dg-s" x="106" y="154" text-anchor="middle">encrypted client-side</text>
+<text class="dg-s" x="106" y="170" text-anchor="middle">AES-256-GCM-SIV,</text>
+<text class="dg-s" x="106" y="182" text-anchor="middle">deterministic</text>
+
+<rect class="dg-box" x="26" y="208" width="160" height="46"/>
+<text class="dg-t" x="106" y="228" text-anchor="middle">Disclosure bundle</text>
+<text class="dg-s" x="106" y="244" text-anchor="middle">scoped, handed to the verifier</text>
+
+<!-- zone: public chain -->
+<rect class="dg-zone" x="228" y="34" width="180" height="238"/>
+<text class="dg-zt" x="238" y="26">PUBLIC CHAIN — SEPOLIA</text>
+
+<rect class="dg-box" x="246" y="60" width="144" height="128"/>
+<text class="dg-t" x="318" y="84" text-anchor="middle">AnchorDataEdge</text>
+<text class="dg-s" x="318" y="104" text-anchor="middle">postAnchor(bytes)</text>
+<text class="dg-s" x="318" y="120" text-anchor="middle">no storage, no events</text>
+<text class="dg-s" x="318" y="142" text-anchor="middle">105-byte envelopes</text>
+<text class="dg-s" x="318" y="158" text-anchor="middle">live only as calldata,</text>
+<text class="dg-s" x="318" y="172" text-anchor="middle">hash-chained</text>
+
+<!-- zone: The Graph -->
+<rect class="dg-zone dg-zone-graph" x="432" y="34" width="192" height="238"/>
+<text class="dg-zt dg-zt-graph" x="442" y="26">THE GRAPH</text>
+
+<rect class="dg-box dg-box-graph" x="450" y="60" width="156" height="56"/>
+<text class="dg-t" x="528" y="82" text-anchor="middle">Call-handler subgraph</text>
+<text class="dg-s" x="528" y="100" text-anchor="middle">existence, order, completeness</text>
+
+<rect class="dg-box dg-box-graph" x="450" y="130" width="156" height="56"/>
+<text class="dg-t" x="528" y="152" text-anchor="middle">Staked indexers</text>
+<text class="dg-s" x="528" y="170" text-anchor="middle">malformed + duplicates reported</text>
+
+<rect class="dg-box dg-box-graph" x="450" y="200" width="156" height="56"/>
+<text class="dg-t" x="528" y="222" text-anchor="middle">Gateway</text>
+<text class="dg-s" x="528" y="240" text-anchor="middle">EIP-712 attestation per response</text>
+
+<!-- verifier -->
+<ellipse class="dg-actor" cx="692" cy="146" rx="60" ry="20"/>
+<text class="dg-t" x="692" y="150" text-anchor="middle">Verifier</text>
+
+<rect class="dg-box" x="626" y="196" width="126" height="60"/>
+<text class="dg-t" x="689" y="220" text-anchor="middle">completeness-</text>
+<text class="dg-t" x="689" y="236" text-anchor="middle">checker</text>
+
+<!-- flows -->
+<path class="dg-line" d="M180 82 C 214 88 218 100 244 110"/>
+<text class="dg-lt" x="184" y="74">posts digests</text>
+
+<path class="dg-line dg-line-d" d="M106 188 L106 204"/>
+
+<path class="dg-line-b" d="M392 100 L446 92"/>
+<text class="dg-lt" x="396" y="82">indexes</text>
+
+<path class="dg-line-b" d="M528 116 L528 126"/>
+<path class="dg-line-b" d="M528 186 L528 196"/>
+<path class="dg-line-b" d="M608 226 C 620 224 616 218 624 216"/>
+
+<path class="dg-line dg-line-d" d="M188 232 C 400 300 560 250 660 244"/>
+<text class="dg-lt" x="336" y="288">hands over the disclosure</text>
+
+<path class="dg-line" d="M632 214 C 470 340 380 320 330 196"/>
+<text class="dg-lt" x="404" y="330">rebuilds from raw blocks — no component from The Graph in the trust path</text>
+
+<!-- the honest boundary -->
+<rect class="dg-zone dg-zone-private" x="8" y="356" width="744" height="34"/>
+<text class="dg-never" x="24" y="378">Only digests of ciphertext are ever public. Plaintext and keys never reach the chain, the subgraph or the gateway.</text>
+
+<text class="dg-s" x="24" y="412">Completeness is bounded by what the chain records — here, transaction calldata — never by off-chain reality.</text>
+</svg>
+</figure>

@@ -1,0 +1,96 @@
+<figure class="diagram">
+<svg class="dg" viewBox="0 0 760 430" role="img" width="100%"
+     aria-labelledby="d1t d1d" preserveAspectRatio="xMidYMid meet">
+<title id="d1t">Who does what in the private-bond audit replay</title>
+<desc id="d1d">The issuer keeps bond records off chain and anchors only Poseidon
+commitments, Merkle roots and nullifiers in the PrivateBond contract on Ethereum
+Sepolia. A call-handler subgraph published to The Graph's decentralized network
+indexes that anchor surface from transaction calldata, and staked indexers serve
+it through the gateway with an EIP-712 attestation on every response. The auditor
+receives a disclosed record set directly from the issuer, fetches the anchor log
+through the gateway, verifies the attestation offline, and independently replays
+the Merkle roots against the contract using an Ethereum node of their own choosing.
+The Graph never receives plaintext records, values, owners or keys.</desc>
+<!--STYLE-->
+
+<!-- zone: confidential -->
+<rect class="dg-zone dg-zone-private" x="8" y="34" width="196" height="238"/>
+<text class="dg-zt" x="18" y="26">CONFIDENTIAL, OFF CHAIN</text>
+
+<ellipse class="dg-actor" cx="106" cy="70" rx="66" ry="20"/>
+<text class="dg-t" x="106" y="74" text-anchor="middle">Issuer</text>
+
+<rect class="dg-box" x="26" y="112" width="160" height="66"/>
+<text class="dg-t" x="106" y="136" text-anchor="middle">Bond records</text>
+<text class="dg-s" x="106" y="154" text-anchor="middle">values, owners, amounts</text>
+<text class="dg-s" x="106" y="168" text-anchor="middle">never on chain</text>
+
+<ellipse class="dg-actor" cx="106" cy="232" rx="66" ry="20"/>
+<text class="dg-t" x="106" y="236" text-anchor="middle">Investors</text>
+
+<!-- zone: public chain -->
+<rect class="dg-zone" x="228" y="34" width="180" height="238"/>
+<text class="dg-zt" x="238" y="26">PUBLIC CHAIN — SEPOLIA</text>
+
+<rect class="dg-box" x="246" y="60" width="144" height="128"/>
+<text class="dg-t" x="318" y="84" text-anchor="middle">PrivateBond</text>
+<text class="dg-s" x="318" y="104" text-anchor="middle">commitments[ ]</text>
+<text class="dg-s" x="318" y="120" text-anchor="middle">knownRoots</text>
+<text class="dg-s" x="318" y="136" text-anchor="middle">nullifiers</text>
+<text class="dg-s" x="318" y="158" text-anchor="middle">emits no events —</text>
+<text class="dg-s" x="318" y="172" text-anchor="middle">data rides in calldata</text>
+
+<!-- zone: The Graph -->
+<rect class="dg-zone dg-zone-graph" x="432" y="34" width="192" height="238"/>
+<text class="dg-zt dg-zt-graph" x="442" y="26">THE GRAPH</text>
+
+<rect class="dg-box dg-box-graph" x="450" y="60" width="156" height="56"/>
+<text class="dg-t" x="528" y="82" text-anchor="middle">Call-handler subgraph</text>
+<text class="dg-s" x="528" y="100" text-anchor="middle">decodes calldata from traces</text>
+
+<rect class="dg-box dg-box-graph" x="450" y="130" width="156" height="56"/>
+<text class="dg-t" x="528" y="152" text-anchor="middle">Staked indexers</text>
+<text class="dg-s" x="528" y="170" text-anchor="middle">GRT behind each answer</text>
+
+<rect class="dg-box dg-box-graph" x="450" y="200" width="156" height="56"/>
+<text class="dg-t" x="528" y="222" text-anchor="middle">Gateway</text>
+<text class="dg-s" x="528" y="240" text-anchor="middle">EIP-712 attestation per response</text>
+
+<!-- auditor -->
+<ellipse class="dg-actor" cx="692" cy="146" rx="60" ry="20"/>
+<text class="dg-t" x="692" y="150" text-anchor="middle">Auditor</text>
+
+<rect class="dg-box" x="632" y="196" width="120" height="60"/>
+<text class="dg-t" x="692" y="220" text-anchor="middle">bond-replay</text>
+<text class="dg-s" x="692" y="238" text-anchor="middle">verify + reconcile</text>
+
+<!-- flows -->
+<path class="dg-line" d="M172 78 C 210 82 216 100 244 108"/>
+<text class="dg-lt" x="186" y="70">anchors</text>
+
+<path class="dg-line dg-line-d" d="M106 178 L106 210"/>
+<text class="dg-lt" x="114" y="198">hold notes</text>
+
+<path class="dg-line-b" d="M392 100 L446 92"/>
+<text class="dg-lt" x="396" y="82">indexes</text>
+
+<path class="dg-line-b" d="M528 116 L528 126"/>
+<path class="dg-line-b" d="M528 186 L528 196"/>
+
+<path class="dg-line-b" d="M608 226 C 626 224 620 216 630 214"/>
+
+<path class="dg-line dg-line-d" d="M150 92 C 380 12 600 96 686 124"/>
+<text class="dg-lt" x="352" y="20">discloses a scoped record set</text>
+
+<path class="dg-line" d="M660 240 C 470 330 380 300 330 196"/>
+<text class="dg-lt" x="430" y="316">replays roots against the chain, via its own node</text>
+
+<!-- the honest boundary -->
+<rect class="dg-zone dg-zone-private" x="8" y="300" width="744" height="52"/>
+<text class="dg-never" x="24" y="322">The Graph never receives plaintext records, values, owners or keys. It indexes what</text>
+<text class="dg-never" x="24" y="340">the chain already made public, and signs for the answer it served.</text>
+
+<text class="dg-s" x="24" y="382">Attestations are signatures, not validity proofs: they make a wrong answer attributable to a staked party, never correct.</text>
+<text class="dg-s" x="24" y="400">Correctness is established by the auditor replaying the roots against the chain, which is why that arrow bypasses The Graph entirely.</text>
+</svg>
+</figure>

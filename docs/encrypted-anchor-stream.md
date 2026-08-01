@@ -43,6 +43,31 @@ Graph's; the code here is ours.
 
 ## How it works
 
+<!-- diagram:item-02 -->
+
+```mermaid
+flowchart LR
+  subgraph CONF["Confidential, off chain"]
+    RK([Record-keeper]) --> ENC["Records + stream key<br/>encrypted client-side"]
+    ENC --> DISC["Disclosure bundle"]
+  end
+  subgraph CHAIN["Public chain — Sepolia"]
+    ADE["AnchorDataEdge<br/>no storage, no events<br/>105-byte envelopes in calldata"]
+  end
+  subgraph GRAPH["The Graph"]
+    SG["Call-handler subgraph<br/>existence · order · completeness"] --> IDX["Staked indexers"] --> GW["Gateway<br/>EIP-712 attestation"]
+  end
+  VER([Verifier]) --> CHK["completeness-checker"]
+  RK -- posts digests --> ADE
+  ADE -- indexes --> SG
+  GW --> CHK
+  DISC -. handed over .-> VER
+  CHK -- "rebuilds from raw blocks, no Graph component in the trust path" --> ADE
+```
+
+*Only digests of ciphertext are ever public. Plaintext and keys never reach the
+chain, the subgraph or the gateway.*
+
 **The contract is deliberately almost nothing.**
 
 ```solidity
