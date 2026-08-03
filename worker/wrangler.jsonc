@@ -1,0 +1,10 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "gps-attested-proxy",
+  "main": "src/index.js",
+  "compatibility_date": "2026-07-01",
+  "observability": { "enabled": true },
+  // GRAPH_GATEWAY_KEY is a SECRET, set with `wrangler secret put` — never here.
+  // DISABLED is a secret too, so the proxy can be switched off without a deploy.
+  "vars": {}
+}
